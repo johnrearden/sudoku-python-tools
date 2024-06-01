@@ -20,12 +20,13 @@ def one_per_nonet(puzzle, update_puzzle=True):
             if num in puzzle.notes[index] and num != cell:
                 puzzle.notes[index].remove(num)
                 
-    print(puzzle.notes)
-
     if update_puzzle:
         for index, cell in enumerate(puzzle.cells):
-            if len(puzzle.notes[index]) == 1:
-                cell = puzzle.notes[index]
+            if len(puzzle.notes[index]) == 1 and puzzle.cells[index] == 0:
+                puzzle.cells[index] = puzzle.notes[index][0]
+                change_detected = True
+                
+    return change_detected
             
 
         

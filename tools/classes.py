@@ -15,6 +15,13 @@ class Puzzle:
                 self.notes[index] = [int(char)]
             except ValueError:
                 self.cells[index] = 0
+                
+    def remaining_cells(self):
+        counter = 0
+        for cell in self.cells:
+            if cell == 0:
+                counter += 1
+        return counter
 
     def __str__(self):
         horizontal_line = '-------------------------------------\n'
@@ -26,7 +33,8 @@ class Puzzle:
             line = line.replace('0', ' ')
             output.append(line)
             output.append(horizontal_line)
-        print(type(output[0]))
         result = ''.join(output)
+        
+        remaining_cells = str(self.remaining_cells())    
 
-        return result
+        return f'{result}\nCells Remaining: {remaining_cells}'
