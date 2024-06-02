@@ -16,7 +16,7 @@ class SudokuGUI:
             row = []
             for j in range(9):
                 cell = tk.Entry(
-                    self.root, width=2, font=('Arial', 39), justify='center')
+                    self.root, width=2, font=('Arial', 25), justify='center')
                 cell.grid(row=i, column=j)
                 if (i // 3 + j // 3) % 2 == 0:
                     cell.configure(bg="lightgrey")
@@ -33,12 +33,12 @@ class SudokuGUI:
 
 
 class SudokuNotesGUI:
-    def __init__(self, parent, notes):
+    def __init__(self, parent, notes, sudoku):
         self.notes = notes
         self.root = parent
         self.cells = []
         self.create_grid()
-        self.update_notes(self.notes)
+        self.update_notes(self.notes, sudoku)
 
     def create_grid(self):
         for i in range(9):
@@ -61,13 +61,17 @@ class SudokuNotesGUI:
                 row.append(sub_cells)
             self.cells.append(row)
             
-    def update_notes(self, notes):
+    def update_notes(self, notes, sudoku):
         for idx, note in enumerate(notes):
             row, col = divmod(idx, 9)
             for k in range(3):
                 for l in range(3):
                     num = k * 3 + l + 1
-                    cell_text = str(num) if num in note else ""
+                    if num in note and sudoku[idx] != num:
+                        cell_text = str(num)
+                    else:
+                        cell_text = ""
+                    #cell_text = str(num) if num in note else ""
                     self.cells[row][col][k][l].config(text=cell_text)
 
 
@@ -85,7 +89,7 @@ class CombinedSudokuGUI:
         self.notes_frame.grid(row=0, column=1, padx=10, pady=10)
 
         self.sudoku_gui = SudokuGUI(self.sudoku_frame, sudoku)
-        self.notes_gui = SudokuNotesGUI(self.notes_frame, notes)
+        self.notes_gui = SudokuNotesGUI(self.notes_frame, notes, sudoku)
         
         self.check_updates()
 
@@ -96,7 +100,7 @@ class CombinedSudokuGUI:
         try:
             new_sudoku = self.update_queue.get_nowait()
             self.sudoku_gui.update_puzzle(new_sudoku[0])
-            self.notes_gui.update_notes(new_sudoku[1])
+            self.notes_gui.update_notes(new_sudoku[1], new_sudoku[0])
             self.root.update_idletasks()
         except queue.Empty:
             pass
