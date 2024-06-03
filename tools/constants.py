@@ -1,3 +1,5 @@
+from enum import Enum
+
 nonets = [
     [0, 1, 2, 3, 4, 5, 6, 7, 8],
     [9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -27,3 +29,9 @@ nonets = [
     [57, 58, 59, 66, 67, 68, 75, 76, 77],
     [60, 61, 62, 69, 70, 71, 78, 79, 80],
 ]
+
+
+class SolverResult(Enum):
+    NO_CHANGE = 1
+    NOTES_ONLY_CHANGED = 2
+    NOTES_AND_CELLS_CHANGED = 3

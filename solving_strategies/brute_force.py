@@ -37,17 +37,11 @@ def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
 
     while True:
         counter += 1
-        if counter % 100000 == 0:
+        if counter % 10000 == 0:
             print(f'counter {counter}\r', end="")
         if counter > 10000000:
             raise Exception('More than 10 million iterations ... no result')
             break
-        
-        # os.system('clear')
-        # print(puzzle)
-        
-        if pointer == 0 and counter > 2:
-            print('Back at start of unknowns list')
 
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:
@@ -77,7 +71,7 @@ def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
 
             # 2nd halting condition. Last unknown cell has a value.
             if pointer >= len(unknown_cells):
-                os.system('clear')
+                # os.system('clear')
                 print(puzzle)
                 print("puzzle solved!")
                 print("iterations", counter)

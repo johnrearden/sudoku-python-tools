@@ -1,5 +1,6 @@
-from tools.constants import nonets
+from tools.constants import nonets, SolverResult
 from collections import defaultdict
+from tools.utils import recalculate_notes
 
 
 def missing_from_only_one(puzzle, updatePuzzle=True):
@@ -54,6 +55,7 @@ def missing_from_only_one(puzzle, updatePuzzle=True):
             if count == 1:
                 cell = last_occurences[digit]
                 puzzle.cells[cell] = digit
-                return True  # notes need to be recalculated
+                puzzle = recalculate_notes(puzzle)
+                return SolverResult.NOTES_AND_CELLS_CHANGED  # notes need to be recalculated
 
-    return False  # solving method unsuccessful for all nonets
+    return SolverResult.NO_CHANGE  # solving method unsuccessful for all nonets

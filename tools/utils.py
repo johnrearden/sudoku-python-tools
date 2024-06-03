@@ -75,7 +75,7 @@ def check_cell_validity(cell_index, puzzle):
     row = [idx for idx in get_row(cell_index) if idx != cell_index]
     col = [idx for idx in get_column(cell_index) if idx != cell_index]
     sqr = [idx for idx in get_square(cell_index) if idx != cell_index]
-    all_cells = list(set([*row, *col, *sqr])) # combine w/o duplicates
+    all_cells = list(set([*row, *col, *sqr]))  # combine w/o duplicates
     all_digits = [puzzle.cells[idx] for idx in all_cells]
 
     if cell_value in all_digits:
@@ -83,5 +83,28 @@ def check_cell_validity(cell_index, puzzle):
     return True
 
 
+def recalculate_notes(puzzle):
+    """
+    Method runs through each cell, eliminating any new digits that are not
+    accounted for in the notes in each of the cell's row, column and square.
 
+    It removes digits only, does not start from a full set of possible digits.
+    """
 
+    for index, cell in enumerate(puzzle.cells):
+        notes = puzzle.notes[index]
+        if cell != 0:
+            notes = [cell]
+        else:
+            row = get_row(index)
+            row_digits = [puzzle.cells[i] for i in row]
+            col = get_column(index)
+            col_digits = [puzzle.cells[i] for i in col]
+            sqr = get_square(index)
+            sqr_digits = [puzzle.cells[i] for i in sqr]
+
+            digits = set([*row_digits, *col_digits, *sqr_digits])
+            notes = [n for n in notes if n not in digits]
+        puzzle.notes[index] = notes
+
+    return puzzle

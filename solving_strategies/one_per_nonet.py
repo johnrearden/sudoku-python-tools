@@ -1,9 +1,10 @@
-from tools.utils import get_column, get_row, get_square
+from tools.utils import get_column, get_row, get_square, recalculate_notes
+from tools.constants import SolverResult
 
 
 def one_per_nonet(puzzle, update_puzzle=True):
 
-    change_detected = False
+    change_detected = SolverResult.NO_CHANGE
 
     for index, cell in enumerate(puzzle.cells):
         row = get_row(index)
@@ -24,7 +25,8 @@ def one_per_nonet(puzzle, update_puzzle=True):
         for index, cell in enumerate(puzzle.cells):
             if len(puzzle.notes[index]) == 1 and puzzle.cells[index] == 0:
                 puzzle.cells[index] = puzzle.notes[index][0]
-                change_detected = True
+                change_detected = SolverResult.NOTES_AND_CELLS_CHANGED
+                puzzle = recalculate_notes(puzzle)
                 
     return change_detected
             

@@ -60,7 +60,8 @@ class SudokuNotesGUI:
                     sub_cells.append(sub_row)
                 row.append(sub_cells)
             self.cells.append(row)
-            
+
+
     def update_notes(self, notes, sudoku):
         for idx, note in enumerate(notes):
             row, col = divmod(idx, 9)
@@ -71,7 +72,6 @@ class SudokuNotesGUI:
                         cell_text = str(num)
                     else:
                         cell_text = ""
-                    #cell_text = str(num) if num in note else ""
                     self.cells[row][col][k][l].config(text=cell_text)
 
 
@@ -90,7 +90,7 @@ class CombinedSudokuGUI:
 
         self.sudoku_gui = SudokuGUI(self.sudoku_frame, sudoku)
         self.notes_gui = SudokuNotesGUI(self.notes_frame, notes, sudoku)
-        
+
         self.check_updates()
 
     def run(self):
@@ -104,4 +104,4 @@ class CombinedSudokuGUI:
             self.root.update_idletasks()
         except queue.Empty:
             pass
-        self.root.after(100, self.check_updates)
+        self.root.after(50, self.check_updates)
