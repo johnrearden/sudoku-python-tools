@@ -3,7 +3,7 @@ from collections import defaultdict
 from tools.utils import recalculate_notes
 
 
-def missing_from_only_one(puzzle, updatePuzzle=True):
+def hidden_single(puzzle, updatePuzzle=True):
     """
     This solving method iterates through the nonets, and works out for each
     nonet how many of the cells have each digit as a possibility.
@@ -15,8 +15,6 @@ def missing_from_only_one(puzzle, updatePuzzle=True):
     The method returns at this point, because the puzzle notes need to be
     updated.
     """
-
-    first_nonet = nonets[0]
 
     for nonet in nonets:
         print_it = False

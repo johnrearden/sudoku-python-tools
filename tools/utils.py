@@ -108,3 +108,10 @@ def recalculate_notes(puzzle):
         puzzle.notes[index] = notes
 
     return puzzle
+
+
+def puzzle_complete(puzzle):
+    unknowns = [puzzle.cells[i] for i in range(81) if puzzle.cells[i] == 0]
+    puzzle_is_legal = check_puzzle_validity(puzzle)
+
+    return not unknowns and puzzle_is_legal

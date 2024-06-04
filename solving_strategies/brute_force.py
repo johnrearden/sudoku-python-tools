@@ -4,7 +4,12 @@ import time
 import random
 
 
-def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
+def brute_force(
+        puzzle,
+        random_swaps=0,
+        randomize_digit_order=False,
+        reverse_grid=False,
+        shuffle=False):
     """
     Method creates a stack of unknown cells, and moves a pointer through the
     stack. If it encounters a cell with no possible digits remaining, it
@@ -30,6 +35,12 @@ def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
         temp = unknown_cells[i]
         unknown_cells[i] = unknown_cells[j]
         unknown_cells[j] = temp
+        
+    if reverse_grid:
+        unknown_cells.reverse()
+        
+    if shuffle:
+        random.shuffle(unknown_cells)
 
     pointer = 0
     counter = 0
@@ -38,8 +49,8 @@ def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
     while True:
         counter += 1
         if counter % 10000 == 0:
-            print(f'counter {counter}\r', end="")
-        if counter > 10000000:
+            print(f'counter {counter} time {time.perf_counter() - start_time:0.1f}\r', end="")
+        if counter > 100000000:
             raise Exception('More than 10 million iterations ... no result')
             break
 
@@ -66,7 +77,7 @@ def brute_force(puzzle, random_swaps=0, randomize_digit_order=False):
 
         # If the grid is still legal, increment the pointer and refill the
         # possibles array. Otherwise, remove the added candidate and loop again
-        if check_cell_validity(cell_index, puzzle):
+        if check_cell_validity(cell_index, puzzle) and check_puzzle_validity(puzzle):
             pointer += 1
 
             # 2nd halting condition. Last unknown cell has a value.
