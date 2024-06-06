@@ -14,6 +14,7 @@ from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows
 from solving_strategies.x_wing import x_wing_cols
+from solving_strategies.locked_candidates import locked_candidates_pointing
 
 import time
 import queue
@@ -76,6 +77,7 @@ def main():
         naked_quads,
         x_wing_rows,
         x_wing_cols,
+        locked_candidates_pointing,
     ]
     solver_usage = defaultdict(int)
     

@@ -16,6 +16,7 @@ from solving_strategies.hidden_triples import hidden_triples
 from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows, x_wing_cols
+from solving_strategies.locked_candidates import locked_candidates_pointing
 
 
 def create_sudoku_puzzle(filled_cells_count):
@@ -52,6 +53,7 @@ def solve_with_strategies(puzzle):
         naked_quads,
         x_wing_rows,
         x_wing_cols,
+        locked_candidates_pointing,
     ]
     solver_usage = defaultdict(int)
     notes_only_changed_count = 0
@@ -92,7 +94,7 @@ if __name__ == '__main__':
     while True:
         duration = time.perf_counter() - start_time
         print(f'Attempt {counter}, time: {duration:0.2f}\r', end='')
-        solved = create_sudoku_puzzle(30)
+        solved = create_sudoku_puzzle(29)
         counter += 1
         if solved:
             duration = time.perf_counter() - start_time

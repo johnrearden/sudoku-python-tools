@@ -112,6 +112,13 @@ def recalculate_notes(puzzle):
     return puzzle
 
 
+def empty_notes_for_known_cells(puzzle):
+    for i in range(0, 81):
+        if puzzle.cells[i] != 0:
+            puzzle.notes[i] = []
+    return puzzle
+
+
 def recalculate_cell_notes(cell_index, puzzle):
     nonets_to_check = [nonets[n] for n in nonets_for_cell[cell_index]]
     possibles = set([1, 2, 3, 4, 5, 6, 7, 8, 9])
