@@ -91,7 +91,7 @@ if __name__ == '__main__':
     while True:
         duration = time.perf_counter() - start_time
         print(f'Attempt {counter}, time: {duration:0.2f}\r', end='')
-        solved = create_sudoku_puzzle(28)
+        solved = create_sudoku_puzzle(30)
         counter += 1
         if solved:
             duration = time.perf_counter() - start_time

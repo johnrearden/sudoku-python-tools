@@ -6,7 +6,7 @@ from tools.constants import SolverResult
 
 def x_wing_rows(puzzle):
     all_rows = nonets[:9]
-    for digit in range(7, 8):
+    for digit in range(1, 10):
         freq_dict = defaultdict(list)
         for row_number, row in enumerate(all_rows):
             for cell in row:
@@ -49,3 +49,8 @@ def x_wing_rows(puzzle):
             # for row in all_rows:
             #     print(puzzle.notes[row[first_col]], puzzle.notes[row[second_col]])
     return SolverResult.NO_CHANGE
+
+
+def x_wing_cols(puzzle):
+    all_cols = nonets[9:18]
+    
