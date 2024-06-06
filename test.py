@@ -59,6 +59,11 @@ def main():
         '''-8--43---716-------3---9---'''
         '''----7------8-1---6---3---71'''
     )
+    puzzle_string_extreme3 = (
+        '''--569-----3------9--8----1-'''
+        '''47--3----1----4--8-----7---'''
+        '''------471---2--3-----3-58--'''
+    )
     
     solvers = [
         one_per_nonet,
@@ -73,7 +78,7 @@ def main():
     solver_usage = defaultdict(int)
     
     puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string_extreme2)
+    puzzle.build_from_string(puzzle_string_extreme3)
     
     update_queue = queue.Queue()
     
@@ -147,14 +152,25 @@ def test_brute_force():
         '''--------2-3---79488---4-165'''
         '''1---6-583--8---496--64--721'''
     )
+    puzzle_string_extreme2 = (
+        '''6-----8----5----3----5-24--'''
+        '''-8--43---716-------3---9---'''
+        '''----7------8-1---6---3---71'''
+    )
+    
+    puzzle_string_extreme3 = (
+        '''--569-----3------9--8----1-'''
+        '''47--3----1----4--8-----7---'''
+        '''------471---2--3-----3-58--'''
+    )
     start_time = time.perf_counter()
     
     puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string_35)
-    brute_force(puzzle, shuffle=True)
+    puzzle.build_from_string(puzzle_string_extreme3)
+    brute_force(puzzle, verbose=False, randomize_possibles=True)
     print(f'time taken: {time.perf_counter() - start_time:0.3f}')
 
 
 if __name__ == '__main__':
-    main()
-    #test_brute_force()
+    #main()
+    test_brute_force()

@@ -3,6 +3,7 @@ class Puzzle:
     def __init__(self):
         self.cells = []
         self.notes = []
+        self.known_cells_count = 0
         notes = [n for n in range(1, 10)]
         for _ in range(81):
             self.cells.append(0)
@@ -15,13 +16,27 @@ class Puzzle:
                 self.notes[index] = [int(char)]
             except ValueError:
                 self.cells[index] = 0
-                
+    
     def remaining_cells(self):
         counter = 0
         for cell in self.cells:
             if cell == 0:
                 counter += 1
         return counter
+
+    def clone(self):
+        clone = Puzzle()
+        clone.cells = self.cells[:]
+        clone.notes = []
+        for notes in self.notes:
+            clone.notes.append(notes[:])
+        assert clone.cells == self.cells
+        assert clone.notes == self.notes
+        return clone
+    
+    def get_known_cells_count(self):
+        known_cells = [self.cells[n] for n in range(81) if self.cells[n] != 0]
+        return len(known_cells)
 
     def __str__(self):
         horizontal_line = '-------------------------------------\n'
