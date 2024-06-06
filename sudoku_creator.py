@@ -15,7 +15,7 @@ from solving_strategies.hidden_pairs import hidden_pairs
 from solving_strategies.hidden_triples import hidden_triples
 from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
-from solving_strategies.x_wing import x_wing_rows
+from solving_strategies.x_wing import x_wing_rows, x_wing_cols
 
 
 def create_sudoku_puzzle(filled_cells_count):
@@ -51,6 +51,7 @@ def solve_with_strategies(puzzle):
         hidden_triples,
         naked_quads,
         x_wing_rows,
+        x_wing_cols,
     ]
     solver_usage = defaultdict(int)
     notes_only_changed_count = 0

@@ -13,6 +13,7 @@ from solving_strategies.hidden_triples import hidden_triples
 from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows
+from solving_strategies.x_wing import x_wing_cols
 
 import time
 import queue
@@ -74,11 +75,12 @@ def main():
         hidden_triples,
         naked_quads,
         x_wing_rows,
+        x_wing_cols,
     ]
     solver_usage = defaultdict(int)
     
     puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string_extreme3)
+    puzzle.build_from_string(puzzle_string_extreme2)
     
     update_queue = queue.Queue()
     
@@ -142,6 +144,11 @@ def test_brute_force():
         '''3---7--2-72-34--51---25-47-'''
         '''-13-2756-6-7-1----25-68-1-7'''
     )
+    # These are examples of puzzle strings that represent Sudoku puzzles. Each
+    # digit in the string represents a cell in the Sudoku grid. The hyphens
+    # represent empty cells that need to be filled in. The numbers and hyphens
+    # are arranged in a specific pattern to create a unique puzzle that can be
+    # solved using the Sudoku solving strategies implemented in the code.
     puzzle_string_38 = (
         '''-387642--16---8-3-4791-26--'''
         '''3------2--2-34--51---25-4--'''
@@ -172,5 +179,5 @@ def test_brute_force():
 
 
 if __name__ == '__main__':
-    #main()
-    test_brute_force()
+    main()
+    #test_brute_force()

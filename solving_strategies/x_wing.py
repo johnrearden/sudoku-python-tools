@@ -3,6 +3,8 @@ from collections import defaultdict
 from tools.constants import nonets
 from tools.constants import SolverResult
 
+import sys
+
 
 def x_wing_rows(puzzle):
     all_rows = nonets[:9]
@@ -38,12 +40,16 @@ def x_wing_rows(puzzle):
                 # all the other rows.
                 rows = [row for row in rows_with_2_digits.keys()]
                 other_rows = [all_rows[n] for n in range(9) if n not in rows]
+                some_note_removed = False
                 for row in other_rows:
                     if digit in puzzle.notes[row[first_col]]:
                         puzzle.notes[row[first_col]].remove(digit)
+                        some_note_removed = True
                     if digit in puzzle.notes[row[second_col]]:
                         puzzle.notes[row[second_col]].remove(digit)
-                return SolverResult.NOTES_ONLY_CHANGED
+                        some_note_removed = True
+                if some_note_removed:
+                    return SolverResult.NOTES_ONLY_CHANGED
 
             # print(f'Notes for cols {first_col} & {second_col} after')
             # for row in all_rows:
@@ -53,4 +59,45 @@ def x_wing_rows(puzzle):
 
 def x_wing_cols(puzzle):
     all_cols = nonets[9:18]
-    
+    for digit in range(1, 10):
+        freq_dict = defaultdict(list)
+        for col_number, col in enumerate(all_cols):
+            for cell in col:
+                row_number = cell // 9
+                if digit in puzzle.notes[cell]:
+                    freq_dict[col_number].append(row_number)
+        # print(digit, ' frequency:', freq_dict)
+        cols_with_2_digits = {}
+        for col_number in freq_dict:
+            if len(freq_dict[col_number]) == 2:
+                cols_with_2_digits[col_number] = freq_dict[col_number]
+        # print('cols_with_2_digits', cols_with_2_digits)
+
+        if len(cols_with_2_digits) == 2:
+            rows = [rows for rows in cols_with_2_digits.values()]
+            first_row = rows[0][0]
+            second_row = rows[0][1]
+            # print(rows)
+            # print(first_row, second_row)
+
+            if rows[0] == rows[1]:
+                cols = [col for col in cols_with_2_digits.keys()]
+                other_cols = [all_cols[n] for n in range(9) if n not in cols]
+                some_note_removed = False
+                for col in other_cols:
+                    if digit in puzzle.notes[col[first_row]]:
+                        puzzle.notes[col[first_row]].remove(digit)
+                        some_note_removed = True
+                    if digit in puzzle.notes[col[second_row]]:
+                        puzzle.notes[col[second_row]].remove(digit)
+                        some_note_removed = True
+                if some_note_removed:
+                    return SolverResult.NOTES_ONLY_CHANGED
+
+            # print(f'Notes for cols {first_row} & {second_row} after')
+            # for col in all_cols:
+                # print(
+                #     puzzle.notes[col[first_row]],
+                #     puzzle.notes[col[second_row]])
+
+    return SolverResult.NO_CHANGE
