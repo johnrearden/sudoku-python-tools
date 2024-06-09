@@ -5,7 +5,10 @@ from collections import defaultdict
 
 from tools.classes import Puzzle
 from tools.constants import SolverResult
-from tools.utils import puzzle_complete, recalculate_notes, choose_n_unknowns
+from tools.utils import (
+    puzzle_complete, recalculate_notes, choose_n_unknowns,
+    get_puzzle_cells_as_string
+)
 from tools.uniqueness_test import is_unique
 
 from solving_strategies.one_per_nonet import one_per_nonet
@@ -30,7 +33,6 @@ def create_sudoku_puzzle(filled_cells_count):
 
     # Main digit removal loop
     for idx, cell in enumerate(indices_to_remove):
-        #print(f'attempting to solve with {idx + 1} cells removed')
         puzzle.cells[cell] = 0
         clone = puzzle.clone()
         clone = recalculate_notes(clone)
@@ -41,8 +43,22 @@ def create_sudoku_puzzle(filled_cells_count):
             # print(puzzle)
             return False
     # print(puzzle)
+    
+    clone = puzzle.clone()
+    clone = recalculate_notes(clone)
+    brute_force_result = brute_force(clone)
+    if not brute_force_result:
+        print(f'brute force not successful - puzzle invalid {brute_force_result}')
+        return False
+    
     unique = is_unique(puzzle)
-    return True
+    if unique:
+        print('Puzzle has a unique solution')
+        print(get_puzzle_cells_as_string(puzzle))
+        return True
+    else:
+        print('Puzzle not unique, unfortunately')
+        return False
 
 
 def solve_with_strategies(puzzle):
@@ -86,7 +102,8 @@ def solve_with_strategies(puzzle):
             #print('no solution with these solvers')
             break
         if puzzle_solved:
-            #print('Puzzle is solved!')
+            #
+            # print('Puzzle is solved!')
             #print(solver_usage)
             break
     return puzzle_solved
@@ -96,11 +113,16 @@ if __name__ == '__main__':
     counter = 1
     start_time = time.perf_counter()
     while True:
+        known_count = 28
         duration = time.perf_counter() - start_time
         print(f'Attempt {counter}, time: {duration:0.2f}\r', end='')
-        solved = create_sudoku_puzzle(28)
+        solved = create_sudoku_puzzle(known_count)
         counter += 1
         if solved:
             duration = time.perf_counter() - start_time
-            print(f'solved on attempt {counter} in {duration:0.2f}s')
+            print(
+                f'created a {known_count} knowns puzzle on attempt '
+                f'{counter} in {duration:0.2f}s'
+            )
             break
+    

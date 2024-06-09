@@ -68,7 +68,6 @@ def brute_force(
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:
             print('puzzle has no solution! ! counter=', counter)
-            print(puzzle)
 
             break
 

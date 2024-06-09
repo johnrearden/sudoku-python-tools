@@ -36,7 +36,6 @@ def is_unique(
     while True:
         counter += 1
         if counter % 10000 == 0:
-            #input()
             if verbose:
                 print(puzzle)
             t = time.perf_counter() - start_time
@@ -44,16 +43,15 @@ def is_unique(
             print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
         if counter > 100000000:
             raise Exception('More than 10 million iterations ... no result')
-            break
 
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:
             if len(solution_set) == 0:
                 print('puzzle has no solution! counter=', counter)
+                return False
             else:
                 print('puzzle has no other solution - solution is unique!')
-
-            break
+                return True
 
         cell_index = unknown_cells[pointer]
 
@@ -62,7 +60,6 @@ def is_unique(
         if not backtracking:
             possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
             random.shuffle(possibles[pointer])
-        # print('cell:', cell_index, ' , possibles:', possibles[pointer])
 
         # If no possibles remain for this cell, we're at a dead end. Reset the
         # cell to 0, and backtrack by decrementing the pointer.
@@ -83,11 +80,10 @@ def is_unique(
             pointer += 1
             backtracking = False
 
-            # 2nd halting condition. Last unknown cell has a value.
+            # Last unknown cell has a value. We have at least one solution.
+            
             if pointer >= len(unknown_cells):
-                print('solution found!')
                 solution_str = get_puzzle_cells_as_string(puzzle)
-                print(solution_str)
                 solution_set.add(solution_str)
                 if len(solution_set) > 1:
                     print('More than one solution found! Puzzle is not unique')
@@ -97,8 +93,5 @@ def is_unique(
                     puzzle.cells[cell_index] = 0
                     pointer -= 1
                     backtracking = True
-                    
-
-            #possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
         else:
             puzzle.cells[cell_index] = 0
