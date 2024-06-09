@@ -6,6 +6,7 @@ from collections import defaultdict
 from tools.classes import Puzzle
 from tools.constants import SolverResult
 from tools.utils import puzzle_complete, recalculate_notes, choose_n_unknowns
+from tools.uniqueness_test import is_unique
 
 from solving_strategies.one_per_nonet import one_per_nonet
 from solving_strategies.hidden_single import hidden_single
@@ -17,6 +18,7 @@ from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows, x_wing_cols
 from solving_strategies.locked_candidates import locked_candidates_pointing
+from solving_strategies.locked_candidates import locked_candidates_claiming
 
 
 def create_sudoku_puzzle(filled_cells_count):
@@ -39,6 +41,7 @@ def create_sudoku_puzzle(filled_cells_count):
             # print(puzzle)
             return False
     # print(puzzle)
+    unique = is_unique(puzzle)
     return True
 
 
@@ -54,6 +57,7 @@ def solve_with_strategies(puzzle):
         x_wing_rows,
         x_wing_cols,
         locked_candidates_pointing,
+        locked_candidates_claiming,
     ]
     solver_usage = defaultdict(int)
     notes_only_changed_count = 0

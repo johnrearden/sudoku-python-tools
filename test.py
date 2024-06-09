@@ -19,6 +19,7 @@ from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows
 from solving_strategies.x_wing import x_wing_cols
 from solving_strategies.locked_candidates import locked_candidates_pointing
+from solving_strategies.locked_candidates import locked_candidates_claiming
 
 import time
 import queue
@@ -82,6 +83,7 @@ def main():
         x_wing_rows,
         x_wing_cols,
         locked_candidates_pointing,
+        locked_candidates_claiming,
     ]
     solver_usage = defaultdict(int)
     
@@ -190,5 +192,5 @@ def test_brute_force():
 
 
 if __name__ == '__main__':
-    #main()
+    # main()
     test_brute_force()

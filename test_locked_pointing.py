@@ -1,4 +1,4 @@
-from solving_strategies.locked_candidates import locked_candidates_pointing
+from solving_strategies.locked_candidates import locked_candidates_claiming
 from tools.classes import Puzzle
 from tools.utils import recalculate_notes, empty_notes_for_known_cells
 
@@ -8,5 +8,5 @@ if __name__ == '__main__':
     puzzle.build_from_string(fruzzled_easy)
     puzzle = recalculate_notes(puzzle)
     puzzle = empty_notes_for_known_cells(puzzle)
-    result = locked_candidates_pointing(puzzle)
+    result = locked_candidates_claiming(puzzle)
     

@@ -108,10 +108,31 @@ def locked_candidates_pointing(puzzle):
 
 
 def locked_candidates_claiming(puzzle):
+    one_note_removed = False
     for digit in range(1, 10):
+        # print('*******************************')
+        # print(f'********* {digit} *************')
+        # print('*******************************')
         for nonet in nonets[0:9]:  # Explore rows first.
+            #print(f'nonet : {nonet}')
             cell_squares = defaultdict(list)
             for cell_index in nonet:
-                if puzzle.cells[cell_index] == digit:
+                if digit in puzzle.notes[cell_index]:
                     sqr_index = nonets_for_cell[cell_index][2]
                     cell_squares[sqr_index].append(cell_index)
+            if len(cell_squares) == 1:
+                square = list(cell_squares.keys())[0]
+                #print('cell_squares:', cell_squares)
+                # Get the other cells in this square that are not in the row.
+                other_cells = [idx for idx in nonets[square] if idx not in nonet]
+                #print('others', other_cells)
+                for idx in other_cells:
+                    if digit in puzzle.notes[idx]:
+                        puzzle.notes[idx].remove(digit)
+                        #print(f'{digit} removed from notes for cell {idx}')
+                        one_note_removed
+            if one_note_removed:
+                return SolverResult.NOTES_ONLY_CHANGED
+            
+    return SolverResult.NO_CHANGE
+            
