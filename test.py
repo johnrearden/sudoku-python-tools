@@ -1,8 +1,12 @@
 import threading
 from tools.classes import Puzzle
-from tools.utils import check_puzzle_validity, recalculate_notes, puzzle_complete
+from tools.utils import (
+    check_puzzle_validity, recalculate_notes, puzzle_complete,
+    get_puzzle_cells_as_string
+)
 from tools.sudoku_gui import CombinedSudokuGUI
 from tools.constants import SolverResult
+from tools.uniqueness_test import is_unique
 
 from solving_strategies.one_per_nonet import one_per_nonet
 from solving_strategies.hidden_single import hidden_single
@@ -176,10 +180,15 @@ def test_brute_force():
     
     puzzle = Puzzle()
     puzzle.build_from_string(puzzle_string_extreme3)
-    brute_force(puzzle, verbose=False, randomize_possibles=True)
+    print(get_puzzle_cells_as_string(puzzle))
+    # for i in range(81):
+    #     if puzzle.cells[i] == 1 or puzzle.cells[i] == 2:
+    #         puzzle.cells[i] = 0
+    # print(get_puzzle_cells_as_string(puzzle))
+    unique = is_unique(puzzle, verbose=False)
     print(f'time taken: {time.perf_counter() - start_time:0.3f}')
 
 
 if __name__ == '__main__':
-    main()
-    #test_brute_force()
+    #main()
+    test_brute_force()

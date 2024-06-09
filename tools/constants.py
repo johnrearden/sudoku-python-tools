@@ -31,15 +31,14 @@ nonets = [
 ]
 
 
-
-
-
 class SolverResult(Enum):
     NO_CHANGE = 1
     NOTES_ONLY_CHANGED = 2
     NOTES_AND_CELLS_CHANGED = 3
-    
 
+
+# This list of lists holds the 3 nonets (row, column and square) by index
+# that each of the 81 cells belong to, ordered from left to right and top down.
 nonets_for_cell = [
     [0, 9, 18],
     [0, 10, 18],

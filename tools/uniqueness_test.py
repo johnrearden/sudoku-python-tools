@@ -6,13 +6,8 @@ import time
 import random
 
 
-def brute_force(
+def is_unique(
         puzzle,
-        random_swaps=0,
-        randomize_digit_order=False,
-        randomize_possibles=False,
-        reverse_grid=False,
-        shuffle=False,
         verbose=False):
     """
     Method creates a stack of unknown cells, and moves a pointer through the
@@ -21,9 +16,6 @@ def brute_force(
     """
 
     ALL_POSSIBLES = [n for n in range(1, 10)]
-    if randomize_digit_order:
-        random.shuffle(ALL_POSSIBLES)
-        print(ALL_POSSIBLES)
 
     unknown_cells = []
     possibles = []
@@ -33,24 +25,13 @@ def brute_force(
             unknown_cells.append(index)
             possibles.append(ALL_POSSIBLES)
 
-    for _ in range(random_swaps):
-        i = random.randint(0, len(unknown_cells) - 1)
-        j = random.randint(0, len(unknown_cells) - 1)
-        temp = unknown_cells[i]
-        unknown_cells[i] = unknown_cells[j]
-        unknown_cells[j] = temp
-
-    if reverse_grid:
-        unknown_cells.reverse()
-
-    if shuffle:
-        random.shuffle(unknown_cells)
-
     pointer = 0
     counter = 0
     backtracking = False
-    puzzle = recalculate_notes(puzzle)    
+    puzzle = recalculate_notes(puzzle)
     start_time = time.perf_counter()
+    
+    solution_set = set()
 
     while True:
         counter += 1
@@ -67,8 +48,10 @@ def brute_force(
 
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:
-            print('puzzle has no solution! ! counter=', counter)
-            print(puzzle)
+            if len(solution_set) == 0:
+                print('puzzle has no solution! counter=', counter)
+            else:
+                print('puzzle has no other solution - solution is unique!')
 
             break
 
@@ -102,13 +85,19 @@ def brute_force(
 
             # 2nd halting condition. Last unknown cell has a value.
             if pointer >= len(unknown_cells):
-                # print(get_puzzle_cells_as_string(puzzle))
-                # os.system('clear')
-                # print(puzzle)
-                # print("puzzle solved!")
-                # print("iterations", counter)
-                # print(f'time taken {time.perf_counter() - start_time:0.3f} seconds')
-                return puzzle.cells
+                print('solution found!')
+                solution_str = get_puzzle_cells_as_string(puzzle)
+                print(solution_str)
+                solution_set.add(solution_str)
+                if len(solution_set) > 1:
+                    print('More than one solution found! Puzzle is not unique')
+                    return False
+                else:
+                    # Backtrack to try other solutions
+                    puzzle.cells[cell_index] = 0
+                    pointer -= 1
+                    backtracking = True
+                    
 
             #possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
         else:

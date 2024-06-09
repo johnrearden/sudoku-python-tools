@@ -184,3 +184,8 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
     # print(f'unknowns: {unknown_cell_indices}')
 
     return unknown_cell_indices
+
+
+def get_puzzle_cells_as_string(puzzle):
+    chars = [str(value) for value in puzzle.cells]
+    return ''.join(chars)
