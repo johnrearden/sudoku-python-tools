@@ -51,7 +51,8 @@ def create_sudoku_puzzle(filled_cells_count):
         print(f'brute force not successful - puzzle invalid {brute_force_result}')
         return False
     
-    unique = is_unique(puzzle)
+    clone = puzzle.clone()
+    unique = is_unique(clone)
     if unique:
         print('Puzzle has a unique solution')
         print(get_puzzle_cells_as_string(puzzle))
@@ -113,7 +114,7 @@ if __name__ == '__main__':
     counter = 1
     start_time = time.perf_counter()
     while True:
-        known_count = 28
+        known_count = 30
         duration = time.perf_counter() - start_time
         print(f'Attempt {counter}, time: {duration:0.2f}\r', end='')
         solved = create_sudoku_puzzle(known_count)

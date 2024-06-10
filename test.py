@@ -178,16 +178,19 @@ def test_brute_force():
         '''47--3----1----4--8-----7---'''
         '''------471---2--3-----3-58--'''
     )
+    
+    puzzle_string_generated = '--79---48--5-6-------4--3--674-2-9--2-3-9-87----1-74-6-38---7----------9146-8----'
     start_time = time.perf_counter()
     
     puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string_extreme3)
+    puzzle.build_from_string(puzzle_string_generated)
     print(get_puzzle_cells_as_string(puzzle))
     # for i in range(81):
     #     if puzzle.cells[i] == 1 or puzzle.cells[i] == 2:
     #         puzzle.cells[i] = 0
     # print(get_puzzle_cells_as_string(puzzle))
-    unique = is_unique(puzzle, verbose=False)
+    result = brute_force(puzzle)
+    print('result:', result)
     print(f'time taken: {time.perf_counter() - start_time:0.3f}')
 
 

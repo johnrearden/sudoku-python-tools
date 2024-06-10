@@ -81,7 +81,6 @@ def is_unique(
             backtracking = False
 
             # Last unknown cell has a value. We have at least one solution.
-            
             if pointer >= len(unknown_cells):
                 solution_str = get_puzzle_cells_as_string(puzzle)
                 solution_set.add(solution_str)
