@@ -179,7 +179,7 @@ def test_brute_force():
         '''------471---2--3-----3-58--'''
     )
     
-    puzzle_string_generated = '--3-5-2146---8--3----1-3-875-----14----2-5--------9--2--48----5--26---7---7-2---3'
+    puzzle_string_generated = '-8--5-3----9----8--------4775----61-43----7--6-87--4-5---18--------6--94-6-94----'
     start_time = time.perf_counter()
     
     puzzle = Puzzle()
@@ -195,5 +195,5 @@ def test_brute_force():
 
 
 if __name__ == '__main__':
-    # main()
+    #main()
     test_brute_force()

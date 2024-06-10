@@ -68,7 +68,8 @@ def check_puzzle_validity(puzzle):
 
 def check_cell_validity(cell_index, puzzle):
     """
-    Method checks the row, column and square that the specified cell is in, 
+    Method checks the row, column and square that the specified cell is in,
+    
     to ensure that the digit in the cell is not replicated in any of these 3
     nonets.
     """
@@ -96,7 +97,7 @@ def recalculate_notes(puzzle):
     for index, cell in enumerate(puzzle.cells):
         notes = puzzle.notes[index]
         if cell != 0:
-            notes = [cell]
+            notes = []
         else:
             row = get_row(index)
             row_digits = [puzzle.cells[i] for i in row]
@@ -155,7 +156,7 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
     for bucket_key in buckets:
         random.shuffle(buckets[bucket_key])
 
-    one_bucket_emptied = False
+    allow_empty_bucket = True and not require_one_of_each_digit
     removed_buckets = []
     for _ in range(unknowns_count):
         bucket_choice = random.choice(list(buckets.keys()))
@@ -164,14 +165,14 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
         # print(bucket_choice, chosen_bucket)
         unknown_cell_indices.append(chosen_bucket.pop())
 
-        if len(chosen_bucket) <= 1 and one_bucket_emptied:
+        if len(chosen_bucket) <= 2 and not allow_empty_bucket:
             removed_buckets.append(bucket_choice)
             del buckets[bucket_choice]
             # print(f'---------length of bucket {bucket_choice} is 1, removing')
             # print(buckets.keys())
 
-        if len(chosen_bucket) == 0 and not one_bucket_emptied:
-            one_bucket_emptied = True
+        if len(chosen_bucket) == 0 and allow_empty_bucket:
+            allow_empty_bucket = False
             removed_buckets.append(bucket_choice)
             del buckets[bucket_choice]
             # print(f'---------length of bucket {bucket_choice} is 0, removing')
@@ -184,6 +185,29 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
     # print(f'unknowns: {unknown_cell_indices}')
 
     return unknown_cell_indices
+
+
+def populate_digit_map(puzzle):
+    digit_map = defaultdict(list)
+    for idx, cell in enumerate(puzzle.cells):
+        if cell != 0:
+            digit_map[cell].append(idx)
+    # for k, v in digit_map.items():
+    #     print(k, v)
+    if len(digit_map) < 9:
+        keys_to_remove = []
+        for digit, arr in digit_map.items():
+            if len(arr) <= 1:
+                keys_to_remove.append(digit)
+        for digit in keys_to_remove:
+            del digit_map[digit]
+    
+    # Shuffle each array of cell indices now, to allow client to pop() them.
+    for v in digit_map.values():
+        random.shuffle(v)
+    # for k, v in digit_map.items():
+    #     print(k, v)
+    return digit_map
 
 
 def get_puzzle_cells_as_string(puzzle):

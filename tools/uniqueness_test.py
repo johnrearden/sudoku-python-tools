@@ -30,27 +30,29 @@ def is_unique(
     backtracking = False
     puzzle = recalculate_notes(puzzle)
     start_time = time.perf_counter()
-    
+
     solution_set = set()
 
     while True:
         counter += 1
         if counter % 10000 == 0:
             if verbose:
-                print(puzzle)
-            t = time.perf_counter() - start_time
-            known = puzzle.get_known_cells_count()
-            print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
-        if counter > 100000000:
+                # print(puzzle)
+                t = time.perf_counter() - start_time
+                known = puzzle.get_known_cells_count()
+                print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
+        if counter > 10000000:
             raise Exception('More than 10 million iterations ... no result')
 
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:
             if len(solution_set) == 0:
-                print('puzzle has no solution! counter=', counter)
+                if verbose:
+                    print('puzzle has no solution! counter=', counter)
                 return False
             else:
-                print('puzzle has no other solution - solution is unique!')
+                if verbose:
+                    print('puzzle has no other solution - solution is unique!')
                 return True
 
         cell_index = unknown_cells[pointer]
@@ -85,7 +87,7 @@ def is_unique(
                 solution_str = get_puzzle_cells_as_string(puzzle)
                 solution_set.add(solution_str)
                 if len(solution_set) > 1:
-                    print('More than one solution found! Puzzle is not unique')
+                    # print('More than one solution found! Puzzle is not unique')
                     return False
                 else:
                     # Backtrack to try other solutions

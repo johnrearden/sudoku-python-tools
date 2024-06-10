@@ -10,7 +10,6 @@ def brute_force(
         puzzle,
         random_swaps=0,
         randomize_digit_order=False,
-        randomize_possibles=False,
         reverse_grid=False,
         shuffle=False,
         verbose=False):
@@ -23,7 +22,7 @@ def brute_force(
     ALL_POSSIBLES = [n for n in range(1, 10)]
     if randomize_digit_order:
         random.shuffle(ALL_POSSIBLES)
-        print(ALL_POSSIBLES)
+        # print(ALL_POSSIBLES)
 
     unknown_cells = []
     possibles = []
@@ -49,7 +48,7 @@ def brute_force(
     pointer = 0
     counter = 0
     backtracking = False
-    puzzle = recalculate_notes(puzzle)    
+    puzzle = recalculate_notes(puzzle)
     start_time = time.perf_counter()
 
     while True:
@@ -58,9 +57,9 @@ def brute_force(
             #input()
             if verbose:
                 print(puzzle)
-            t = time.perf_counter() - start_time
-            known = puzzle.get_known_cells_count()
-            print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
+                t = time.perf_counter() - start_time
+                known = puzzle.get_known_cells_count()
+                print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
         if counter > 100000000:
             raise Exception('More than 10 million iterations ... no result')
             break
@@ -107,8 +106,10 @@ def brute_force(
                 # print("puzzle solved!")
                 # print("iterations", counter)
                 # print(f'time taken {time.perf_counter() - start_time:0.3f} seconds')
-                return puzzle.cells
+                return puzzle
 
             #possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
         else:
             puzzle.cells[cell_index] = 0
+            
+    return None
