@@ -142,7 +142,11 @@ def puzzle_complete(puzzle):
     return not unknowns and puzzle_is_legal
 
 
-def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
+def choose_n_unknowns(
+        puzzle,
+        unknowns_count,
+        require_one_of_each_digit=False,
+        should_sort=True):
 
     # The list to return
     unknown_cell_indices = []
@@ -183,8 +187,10 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
     # print(f'keys remaining: {len(buckets)}')
     # print(f'removed buckets: {removed_buckets}')
     # print(f'unknowns: {unknown_cell_indices}')
-
-    return unknown_cell_indices
+    if should_sort:
+        return sorted(unknown_cell_indices)
+    else:
+        return unknown_cell_indices
 
 
 def populate_digit_map(puzzle):
