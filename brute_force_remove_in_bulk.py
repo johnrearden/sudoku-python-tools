@@ -36,7 +36,7 @@ def create_sudoku_puzzle(filled_cells_count):
     indices_to_remove = choose_n_unknowns(
         puzzle,
         81 - filled_cells_count,
-        require_one_of_each_digit=True,
+        require_one_of_each_digit=False,
         should_sort=True
         )
 
@@ -60,8 +60,8 @@ def create_sudoku_puzzle(filled_cells_count):
 
 if __name__ == '__main__':
     counter = 1
-    iterations = 10
-    known_count = 30
+    iterations = 200
+    known_count = 40
     csv_data = []
     for iteration in range(iterations):
         start_time = time.perf_counter()
@@ -84,6 +84,6 @@ if __name__ == '__main__':
     print(f'{len(csv_data)} lines in csv output')
     filename = f'inputs/csv_files/{known_count}_knowns_rib.csv'
     with open(filename, 'w+') as outfile:
-        outfile.write('known_count,unique_solution,time_taken\n')
+        outfile.write('known_count,unique_solution,puzzle_string,time_taken\n')
         for item in csv_data:
             outfile.write(item + '\n')

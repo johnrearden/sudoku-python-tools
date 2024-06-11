@@ -1,3 +1,54 @@
+import numpy as np
+from tools.constants import nonets, nonets_for_cell
+
+
+class NpPuzzle:
+    def __init__(self):
+        self.cells = np.zeros(81, dtype=np.int8)
+        self.notes = np.zeros((81, 9), dtype=bool)
+
+    def build_from_string(self, str):
+        for idx, char in enumerate(str):
+            if char.isnumeric():
+                self.cells[idx] = int(char)
+
+    def calculate_notes(self, remove_only=True):
+        for note_idx in range(81):
+            if self.cells[note_idx] > 0:
+                self.notes[note_idx] = np.zeros(9, dtype=bool)
+                continue
+            nonets_to_check = [nonets[n] for n in nonets_for_cell[note_idx]]
+            results = np.ones((4, 9), dtype=bool)
+            if remove_only:
+                results[3] = self.notes[note_idx]  # 'and' with original notes
+            else:
+                results[3] = np.ones(9, dtype=bool)  # No effect on 'and'
+            for idx, nonet in enumerate(nonets_to_check):
+                result = np.ones(9, dtype=bool)
+                for cell_idx in nonet:
+                    value = self.cells[cell_idx]
+                    if value > 0 or note_idx == cell_idx:
+                        result[value - 1] = False
+                results[idx] = result
+            self.notes[note_idx] = np.logical_and.reduce(results)
+
+    def check_cell_is_valid(self, cell_idx):
+        nonet_indices = nonets_for_cell[cell_idx]
+        nonets = [nonets[n] for n in nonet_indices]
+        valid = True
+        for nonet in nonets:
+            
+
+    def clone(self):
+        clone = Puzzle()
+        clone.cells = np.copy(self.cells)
+        clone.notes = np.copy(self.notes)
+        return clone
+
+    def __str__(self):
+        return ''.join([str(n) if n > 0 else '-' for n in self.cells])
+
+
 class Puzzle:
 
     def __init__(self):
