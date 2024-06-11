@@ -32,15 +32,46 @@ class NpPuzzle:
                 results[idx] = result
             self.notes[note_idx] = np.logical_and.reduce(results)
 
+    def calculate_notes_for_cell(self, index):
+        if self.cells[index] > 0:
+            self.notes[index] = np.zeros(9, dtype=bool)
+            return
+        nonets_to_check = [nonets[n] for n in nonets_for_cell[index]]
+        results = np.ones((3, 9), dtype=bool)
+
+        for idx, nonet in enumerate(nonets_to_check):
+            result = np.ones(9, dtype=bool)
+            for cell_idx in nonet:
+                value = self.cells[cell_idx]
+                if value > 0 or cell_idx == index:
+                    result[value - 1] = False
+            results[idx] = result
+        self.notes[index] = np.logical_and.reduce(results)
+        print(f'cell {index} -> {self.notes[index]}')
+
     def check_cell_is_valid(self, cell_idx):
+        """
+        Returns boolean indicating whether the current value of the cell at
+        the index supplied as an argument is valid given the current state of
+        the grid. Returns True if the value in the cell is empty (zero)
+        """
+        if self.cells[cell_idx] == 0:
+            print('value is 0')
+            return True
+        value = self.cells[cell_idx]
         nonet_indices = nonets_for_cell[cell_idx]
-        nonets = [nonets[n] for n in nonet_indices]
-        valid = True
-        for nonet in nonets:
-            
+        check_nonets = [nonets[n] for n in nonet_indices]
+        for nonet in check_nonets:
+            for idx in nonet:
+                if idx != cell_idx and self.cells[idx] == value:
+                    return False
+        return True
+    
+    def get_known_cells_count(self):
+        return sum(1 for cell in self.cells if cell > 0)
 
     def clone(self):
-        clone = Puzzle()
+        clone = NpPuzzle()
         clone.cells = np.copy(self.cells)
         clone.notes = np.copy(self.notes)
         return clone
