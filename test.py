@@ -183,7 +183,7 @@ def test_brute_force():
     start_time = time.perf_counter()
     
     puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string_generated)
+    puzzle.build_from_string(puzzle_string_extreme3)
     print(get_puzzle_cells_as_string(puzzle))
     # for i in range(81):
     #     if puzzle.cells[i] == 1 or puzzle.cells[i] == 2:

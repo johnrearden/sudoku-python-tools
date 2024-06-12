@@ -43,11 +43,15 @@ class NpPuzzle:
             result = np.ones(9, dtype=bool)
             for cell_idx in nonet:
                 value = self.cells[cell_idx]
-                if value > 0 or cell_idx == index:
+                if value > 0:
                     result[value - 1] = False
+
             results[idx] = result
-        self.notes[index] = np.logical_and.reduce(results)
-        print(f'cell {index} -> {self.notes[index]}')
+        self.notes[index] = np.logical_and.reduce([results[0], results[1], results[2]])
+
+        cell_value = self.cells[index]
+        if cell_value > 0:
+            self.notes[index][cell_value - 1] = False
 
     def check_cell_is_valid(self, cell_idx):
         """
@@ -119,6 +123,9 @@ class Puzzle:
     def get_known_cells_count(self):
         known_cells = [self.cells[n] for n in range(81) if self.cells[n] != 0]
         return len(known_cells)
+    
+    def to_short_string(self):
+        return ''.join([str(n) if n > 0 else '-' for n in self.cells])
 
     def __str__(self):
         horizontal_line = '-------------------------------------\n'
