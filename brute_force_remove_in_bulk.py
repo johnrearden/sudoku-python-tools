@@ -34,9 +34,10 @@ def create_sudoku_puzzle(filled_cells_count):
     # print(puzzle)
 
     indices_to_remove = choose_n_unknowns(
-        puzzle, 
+        puzzle,
         81 - filled_cells_count,
-        require_one_of_each_digit=True
+        require_one_of_each_digit=False,
+        should_sort=True
         )
 
     # Main digit removal loop
@@ -44,19 +45,22 @@ def create_sudoku_puzzle(filled_cells_count):
         puzzle.cells[cell_index] = 0
 
     clone = puzzle.clone()
+    puzzle_string = get_puzzle_cells_as_string(clone)
     clone = recalculate_notes(clone)
     unique = is_unique(clone)
     if unique:
         print('Puzzle has a unique solution')
-        print(get_puzzle_cells_as_string(puzzle))
-        return True
+        solution_string = get_puzzle_cells_as_string(puzzle)
+        print(solution_string)
+        return (True, puzzle_string)
     else:
         # print('Puzzle not unique, unfortunately')
-        return False
+        return (False, puzzle_string)
 
 
 if __name__ == '__main__':
     counter = 1
+<<<<<<< HEAD
     start_time = time.perf_counter()
     while True:
         known_count = 30
@@ -65,10 +69,32 @@ if __name__ == '__main__':
         solved = create_sudoku_puzzle(known_count)
         counter += 1
         if solved:
+=======
+    iterations = 200
+    known_count = 40
+    csv_data = []
+    for iteration in range(iterations):
+        start_time = time.perf_counter()
+        while True:
+            (solved, puz_str) = create_sudoku_puzzle(known_count)
+>>>>>>> e0a5190a152c6aaebff57a1b0da58bc966ff6e0f
             duration = time.perf_counter() - start_time
-            print(
-                f'created a {known_count} knowns puzzle on attempt '
-                f'{counter} in {duration:0.2f}s'
-            )
-            break
-    
+            print(f'Iteration {iteration}, Attempt {counter}, '
+                  f'time: {duration:0.2f}\r', end='')
+            counter += 1
+            csv_string = f'{known_count},{solved},{puz_str},{duration:0.2f}'
+            csv_data.append(csv_string)
+            if solved:
+                duration = time.perf_counter() - start_time
+                print(
+                    f'created a {known_count} knowns puzzle on attempt '
+                    f'{counter} in {duration:0.2f}s'
+                )
+                break
+
+    print(f'{len(csv_data)} lines in csv output')
+    filename = f'inputs/csv_files/{known_count}_knowns_rib.csv'
+    with open(filename, 'w+') as outfile:
+        outfile.write('known_count,unique_solution,puzzle_string,time_taken\n')
+        for item in csv_data:
+            outfile.write(item + '\n')

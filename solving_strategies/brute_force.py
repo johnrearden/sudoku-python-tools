@@ -104,7 +104,7 @@ def brute_force(
                 # os.system('clear')
                 # print(puzzle)
                 # print("puzzle solved!")
-                # print("iterations", counter)
+                #print("iterations", counter)
                 # print(f'time taken {time.perf_counter() - start_time:0.3f} seconds')
                 return puzzle
 
