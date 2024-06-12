@@ -120,7 +120,7 @@ if __name__ == '__main__':
     counter = 1
     start_time = time.perf_counter()
     while True:
-        known_count = 40
+        known_count = 32
         duration = time.perf_counter() - start_time
         print(f'Attempt {counter}, time: {duration:0.2f}\r', end='')
         solved = create_sudoku_puzzle(known_count)

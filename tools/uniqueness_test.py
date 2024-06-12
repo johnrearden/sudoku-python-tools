@@ -41,8 +41,8 @@ def is_unique(
                 t = time.perf_counter() - start_time
                 known = puzzle.get_known_cells_count()
                 print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
-        if counter > 10000000:
-            raise Exception('More than 10 million iterations ... no result')
+        if counter > 5000000:
+            return False
 
         # First halting condition - cell at bottom of stack has no solution
         if len(possibles[0]) == 0 and pointer == 0:

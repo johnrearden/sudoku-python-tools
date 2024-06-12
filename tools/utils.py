@@ -165,7 +165,7 @@ def choose_n_unknowns(puzzle, unknowns_count, require_one_of_each_digit=False):
         # print(bucket_choice, chosen_bucket)
         unknown_cell_indices.append(chosen_bucket.pop())
 
-        if len(chosen_bucket) <= 2 and not allow_empty_bucket:
+        if len(chosen_bucket) <= 1 and not allow_empty_bucket:
             removed_buckets.append(bucket_choice)
             del buckets[bucket_choice]
             # print(f'---------length of bucket {bucket_choice} is 1, removing')
