@@ -34,7 +34,7 @@ def create_sudoku_puzzle(filled_cells_count, valid_puzzle_dict):
         clone = recalculate_notes(clone)
         unique = is_unique(clone)
         if not unique:
-            if known_count < 33:
+            if known_count < 29:
                 print(f'But valid puzzle with {known_count} knowns found')
                 valid_puzzle_dict[known_count].append(current_string)
             return False
