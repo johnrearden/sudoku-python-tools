@@ -3,6 +3,9 @@ from tools.uniqueness_test import is_unique
 from tools.classes import Puzzle
 from tools.utils import recalculate_notes
 
+from collections import defaultdict
+import csv
+
 
 def try_every_removal(puzzle_string):
     """
@@ -18,8 +21,10 @@ def try_every_removal(puzzle_string):
     original = Puzzle()
     original.build_from_string(puzzle_string)
     knowns = [idx for idx in range(81) if original.cells[idx] > 0]
-    print(knowns)
+    known_count = len(knowns)
 
+    results = []
+        
     for idx in knowns:
         print(idx)
         puzzle = Puzzle()
@@ -32,13 +37,39 @@ def try_every_removal(puzzle_string):
 
         if unique:
             print(f'Removing cell {idx} from puzzle results in another'
-                  f'valid puzzle')
+                 f'valid puzzle')
             print(new_puzzle_string)
+            results.append(new_puzzle_string)
         else:
-            print(f'Removing cell {idx} from puzzle result in invalid puzzle')
+            pass
+            print(f'Removing cell {idx} from puzzle results in invalid puzzle')
+            
+    return results
 
 
 if __name__ == '__main__':
-    puzzle_string = '-2--------5-8-76----49-6--8--6--9-7-3-7-5-----956---3--4-5--2--------76------3-5-'
-    puzzle_string = '-2--------5-8-7-----49-6--8--6--9-7-3-7-5-----956---3--4-5--2--------76------3-5-'
-    try_every_removal(puzzle_string)
+
+    s = '-43----2--7-48----52---6----5-8--4----------------4657---63--4-495----8---754-1--'
+    count = len([char for char in s if char != '-'])
+    print(count)
+
+    with open('1hr_run.csv') as file:
+
+        csv_reader = csv.reader(file, delimiter=',')
+        puzzle_dict = defaultdict(list)
+        for row in csv_reader:
+            key = int(row[0])
+            puzzle_dict[key].append(row[1])
+
+        further_puzzles = {}
+        candidates = [puzzle_dict[27][0]]
+        all_results = candidates[:]
+        while candidates:
+            results = try_every_removal(candidates.pop())
+            candidates.extend(results)
+            print(f'{len(candidates)} left, {len(all_results)} results')
+            for result in results:
+                known_count = len([char for char in result if char != '-'])
+                further_puzzles[known_count] = result  # update with new
+                print(f'{known_count},{result}')
+
