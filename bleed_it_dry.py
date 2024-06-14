@@ -25,8 +25,8 @@ def try_every_removal(puzzle_string):
 
     results = []
         
-    for idx in knowns:
-        print(idx)
+    for i, idx in enumerate(knowns):
+        print(f'{i + 1} of {known_count}')
         puzzle = Puzzle()
         puzzle.build_from_string(puzzle_string)
         puzzle.cells[idx] = 0
@@ -37,7 +37,7 @@ def try_every_removal(puzzle_string):
 
         if unique:
             print(f'Removing cell {idx} from puzzle results in another'
-                 f'valid puzzle')
+                 f' valid puzzle')
             print(new_puzzle_string)
             results.append(new_puzzle_string)
         else:
@@ -62,7 +62,7 @@ if __name__ == '__main__':
             puzzle_dict[key].append(row[1])
 
         further_puzzles = {}
-        candidates = [puzzle_dict[27][0]]
+        candidates = [puzzle_dict[27][1]]
         all_results = candidates[:]
         while candidates:
             results = try_every_removal(candidates.pop())
@@ -72,4 +72,7 @@ if __name__ == '__main__':
                 known_count = len([char for char in result if char != '-'])
                 further_puzzles[known_count] = result  # update with new
                 print(f'{known_count},{result}')
+
+    for key, value in further_puzzles.items():
+        print(f'{key},{value}')
 
