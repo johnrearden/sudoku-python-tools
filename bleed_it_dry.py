@@ -62,7 +62,7 @@ if __name__ == '__main__':
             puzzle_dict[key].append(row[1])
 
         further_puzzles = {}
-        candidates = [puzzle_dict[27][1]]
+        candidates = [puzzle_dict[27][3]]
         all_results = candidates[:]
         while candidates:
             results = try_every_removal(candidates.pop())
@@ -72,7 +72,7 @@ if __name__ == '__main__':
                 known_count = len([char for char in result if char != '-'])
                 further_puzzles[known_count] = result  # update with new
                 print(f'{known_count},{result}')
-
-    for key, value in further_puzzles.items():
-        print(f'{key},{value}')
+            for key, value in further_puzzles.items():
+                print(f'{key},{value}')
+    
 
