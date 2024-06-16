@@ -109,6 +109,7 @@ if __name__ == '__main__':
         with open('tough_muddas.txt', 'a') as outfile:
             if not completed_tasks.empty():
                 result_dict = completed_tasks.get()
+                num_tasks -= 1
                 min_key = min(result_dict.keys())
                 min_result = result_dict[min_key]
                 outfile.write(f'{min_key},{min_result}\n')
