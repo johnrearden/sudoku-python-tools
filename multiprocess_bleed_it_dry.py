@@ -91,7 +91,7 @@ if __name__ == '__main__':
     processes = []
 
     # Start the Processes, number == cpu_count()
-    candidates_with_27 = puzzle_dict[27]
+    candidates_with_27 = puzzle_dict[28]
     for cdt in candidates_with_27:
         tasks_to_do.put(cdt)
     num_tasks = len(candidates_with_27)

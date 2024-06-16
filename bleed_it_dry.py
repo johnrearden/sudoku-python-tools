@@ -62,7 +62,8 @@ if __name__ == '__main__':
             puzzle_dict[key].append(row[1])
 
         further_puzzles = {}
-        candidates = [puzzle_dict[27][3]]
+        candidates = [puzzle_dict[27][5]]
+        print(candidates)
         all_results = candidates[:]
         while candidates:
             results = try_every_removal(candidates.pop())
