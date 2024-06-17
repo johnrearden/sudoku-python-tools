@@ -58,6 +58,7 @@ def main():
     target_count = args.knowns
     run_time = args.time
     num_processes = cpu_count()
+    print(f'Starting the processes using {num_processes} cores')
     completed_tasks = Queue()
     start_time = time.perf_counter()
     processes = []
