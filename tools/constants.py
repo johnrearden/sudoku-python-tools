@@ -32,6 +32,12 @@ nonets = [
 
 
 class SolverResult(Enum):
+    """
+    A single run of a puzzle solving algorithm can result in 3 possibilies:
+    1. Nothing changes
+    2. The notes change, but not the actual cell values
+    3. The cell values change
+    """
     NO_CHANGE = 1
     NOTES_ONLY_CHANGED = 2
     NOTES_AND_CELLS_CHANGED = 3

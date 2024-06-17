@@ -3,8 +3,10 @@
         "actuals",
         "argmax",
         "dtype",
+        "infile",
         "muddas",
         "nonets",
-        "occurences"
+        "occurences",
+        "solvables"
     ]
 }
