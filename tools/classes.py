@@ -47,7 +47,8 @@ class NpPuzzle:
                     result[value - 1] = False
 
             results[idx] = result
-        self.notes[index] = np.logical_and.reduce([results[0], results[1], results[2]])
+        self.notes[index] = np.logical_and.reduce(
+            [results[0], results[1], results[2]])
 
         cell_value = self.cells[index]
         if cell_value > 0:
@@ -102,13 +103,16 @@ class Puzzle:
                 self.notes[index] = [int(char)]
             except ValueError:
                 self.cells[index] = 0
-    
+
     def remaining_cells(self):
         counter = 0
         for cell in self.cells:
             if cell == 0:
                 counter += 1
         return counter
+
+    def knowns_count(self):
+        return 81 - self.remaining_cells()
 
     def clone(self):
         clone = Puzzle()

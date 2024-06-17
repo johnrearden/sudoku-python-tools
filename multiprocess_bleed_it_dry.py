@@ -1,4 +1,3 @@
-from solving_strategies.brute_force import brute_force
 from tools.uniqueness_test import is_unique
 from tools.classes import Puzzle
 from tools.utils import recalculate_notes
@@ -24,12 +23,11 @@ def try_every_removal(puzzle_string):
     original = Puzzle()
     original.build_from_string(puzzle_string)
     knowns = [idx for idx in range(81) if original.cells[idx] > 0]
-    known_count = len(knowns)
 
     results = []
 
     for i, idx in enumerate(knowns):
-        #print(f'{i + 1} of {known_count}')
+        # print(f'{i + 1} of {known_count}')
         puzzle = Puzzle()
         puzzle.build_from_string(puzzle_string)
         puzzle.cells[idx] = 0
@@ -47,7 +45,7 @@ def try_every_removal(puzzle_string):
             results.append(new_puzzle_string)
         else:
             pass
-            # print(f'Removing cell {idx} from puzzle results in invalid puzzle')
+            # print(f'Removing cell {idx} results in invalid puzzle')
 
     return results
 

@@ -4,7 +4,6 @@ from solving_strategies.naked_pairs import naked_pairs
 from solving_strategies.naked_triples import naked_triples
 from solving_strategies.hidden_pairs import hidden_pairs
 from solving_strategies.hidden_triples import hidden_triples
-from solving_strategies.brute_force import brute_force
 from solving_strategies.naked_quads import naked_quads
 from solving_strategies.x_wing import x_wing_rows
 from solving_strategies.x_wing import x_wing_cols
@@ -12,14 +11,10 @@ from solving_strategies.locked_candidates import locked_candidates_pointing
 from solving_strategies.locked_candidates import locked_candidates_claiming
 
 from tools.classes import Puzzle
-from tools.utils import (
-    check_puzzle_validity, recalculate_notes, puzzle_complete,
-    get_puzzle_cells_as_string
-)
+from tools.utils import puzzle_complete
 from tools.constants import SolverResult
 
 from collections import defaultdict
-import time
 import csv
 
 
@@ -75,13 +70,13 @@ def main():
             known_count = row[0]
             puzzle_string = row[1]
             puzzle_dict[known_count].append(puzzle_string)
-            
+
     solvables = defaultdict(list)
     non_solvables = defaultdict(list)
     solvables_count = 0
     non_solvables_count = 0
 
-    #for k, v in puzzle_dict.items():
+    # for k, v in puzzle_dict.items():
     k = '23'
     v = puzzle_dict[k]
     for puzzle_string in v:

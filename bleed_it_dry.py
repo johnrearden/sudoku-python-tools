@@ -1,4 +1,3 @@
-from solving_strategies.brute_force import brute_force
 from tools.uniqueness_test import is_unique
 from tools.classes import Puzzle
 from tools.utils import recalculate_notes
@@ -37,21 +36,17 @@ def try_every_removal(puzzle_string):
 
         if unique:
             print(f'Removing cell {idx} from puzzle results in another'
-                 f' valid puzzle')
+                  f' valid puzzle')
             print(new_puzzle_string)
             results.append(new_puzzle_string)
         else:
             pass
             print(f'Removing cell {idx} from puzzle results in invalid puzzle')
-            
+
     return results
 
 
 if __name__ == '__main__':
-
-    s = '-43----2--7-48----52---6----5-8--4----------------4657---63--4-495----8---754-1--'
-    count = len([char for char in s if char != '-'])
-    print(count)
 
     with open('1hr_run.csv') as file:
 
@@ -75,5 +70,4 @@ if __name__ == '__main__':
                 print(f'{known_count},{result}')
             for key, value in further_puzzles.items():
                 print(f'{key},{value}')
-    
 

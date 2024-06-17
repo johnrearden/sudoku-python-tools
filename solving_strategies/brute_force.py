@@ -1,6 +1,5 @@
 from tools.utils import (
-    check_cell_validity, check_puzzle_validity, recalculate_notes,
-    recalculate_cell_notes, get_puzzle_cells_as_string
+    check_cell_validity, recalculate_notes, recalculate_cell_notes
 )
 import time
 import random
@@ -54,12 +53,14 @@ def brute_force(
     while True:
         counter += 1
         if counter % 10000 == 0:
-            #input()
+            # input()
             if verbose:
                 print(puzzle)
                 t = time.perf_counter() - start_time
                 known = puzzle.get_known_cells_count()
-                print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
+                print(
+                    f'counter {counter} time {t:0.1f} known: {known}\r',
+                    end="")
         if counter > 100000000:
             raise Exception('More than 10 million iterations ... no result')
             break
@@ -104,11 +105,10 @@ def brute_force(
                 # os.system('clear')
                 # print(puzzle)
                 # print("puzzle solved!")
-                #print("iterations", counter)
-                # print(f'time taken {time.perf_counter() - start_time:0.3f} seconds')
+                # print("iterations", counter)
                 return puzzle
 
-            #possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
+            # possibles[pointer] = recalculate_cell_notes(cell_index, puzzle)
         else:
             puzzle.cells[cell_index] = 0
             

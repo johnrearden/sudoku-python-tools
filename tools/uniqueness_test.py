@@ -1,5 +1,5 @@
 from tools.utils import (
-    check_cell_validity, check_puzzle_validity, recalculate_notes,
+    check_cell_validity, recalculate_notes,
     recalculate_cell_notes, get_puzzle_cells_as_string
 )
 import time
@@ -40,7 +40,9 @@ def is_unique(
                 # print(puzzle)
                 t = time.perf_counter() - start_time
                 known = puzzle.get_known_cells_count()
-                print(f'counter {counter} time {t:0.1f} known: {known}\r', end="")
+                print(
+                    f'counter {counter} time {t:0.1f} known: {known}\r',
+                    end="")
         if counter > 5000000:
             return False
 
@@ -87,7 +89,7 @@ def is_unique(
                 solution_str = get_puzzle_cells_as_string(puzzle)
                 solution_set.add(solution_str)
                 if len(solution_set) > 1:
-                    # print('More than one solution found! Puzzle is not unique')
+                    # print('More than one solution found! Puzzle not unique')
                     return False
                 else:
                     # Backtrack to try other solutions

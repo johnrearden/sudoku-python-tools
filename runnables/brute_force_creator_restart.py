@@ -3,11 +3,7 @@ import time
 from collections import defaultdict
 
 from tools.classes import Puzzle
-from tools.constants import SolverResult
-from tools.utils import (
-    puzzle_complete, recalculate_notes, choose_n_unknowns,
-    get_puzzle_cells_as_string
-)
+from tools.utils import recalculate_notes, choose_n_unknowns
 from tools.uniqueness_test import is_unique
 from solving_strategies.brute_force import brute_force
 
@@ -15,8 +11,8 @@ from solving_strategies.brute_force import brute_force
 def create_sudoku_puzzle(filled_cells_count, valid_puzzle_dict):
     """
     A completed puzzle is created, and then cells removed one by one (but not
-    reducing the number of more than one digit below 1). If at any point the
-    puzzle not longer has a unique solution, it is abandoned.
+    reducing the number of unknowns to more than one digit below 1). If at any
+    point the puzzle not longer has a unique solution, it is abandoned.
     """
 
     puzzle = Puzzle()
