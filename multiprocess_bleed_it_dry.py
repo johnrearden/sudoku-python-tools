@@ -106,7 +106,7 @@ if __name__ == '__main__':
     # the queue, grab it, get the puzzle with the minimum knows, and
     # write it to a results file
     while True:
-        with open('tough_muddas.txt', 'a') as outfile:
+        with open('tough_muddas.csv', 'a') as outfile:
             if not completed_tasks.empty():
                 result_dict = completed_tasks.get()
                 num_tasks -= 1
