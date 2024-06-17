@@ -80,7 +80,11 @@ def main():
             if not completed_tasks.empty():
                 result = completed_tasks.get()
                 num_found += 1
-                print(result)
+                time_elapsed = time.perf_counter() - start_time
+                out = (
+                    f'{num_found} ({target_count}) found in '
+                    f'{time_elapsed:0.2}s        ')
+                print(out + '\r', end='')
                 file.write(result + '\n')
             else:
                 time.sleep(0.1)
