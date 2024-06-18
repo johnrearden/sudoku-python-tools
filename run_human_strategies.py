@@ -9,6 +9,7 @@ from solving_strategies.x_wing import x_wing_rows
 from solving_strategies.x_wing import x_wing_cols
 from solving_strategies.locked_candidates import locked_candidates_pointing
 from solving_strategies.locked_candidates import locked_candidates_claiming
+from solving_strategies.swordfish import swordfish_rows
 
 from tools.classes import Puzzle
 from tools.utils import puzzle_complete
@@ -61,9 +62,10 @@ def main():
         x_wing_cols,
         locked_candidates_pointing,
         locked_candidates_claiming,
+        swordfish_rows,
     ]
 
-    with open('data/generated_puzzles/28_knowns.csv', 'r') as infile:
+    with open('data/mined_puzzles/below_28_knowns.csv', 'r') as infile:
         puzzle_dict = defaultdict(list)
         reader = csv.reader(infile, delimiter=',')
         for row in reader:
@@ -77,21 +79,22 @@ def main():
     non_solvables_count = 0
 
     # for k, v in puzzle_dict.items():
-    k = '28'
+    k = '23'
     v = puzzle_dict[k]
     for idx, puzzle_string in enumerate(v):
         result = solve_with_strategies(puzzle_string, solvers)
-        print('-------------------------')
-        print(f'Puzzle ({k}) {puzzle_string}')
+        # print('-------------------------')
+        # print(f'Puzzle ({k}) {puzzle_string}')
         if result:
             solvables[k].append(puzzle_string)
             solvables_count += 1
-            print(f'solution: {result} : {idx}/{len(v)}')
+            # print(f'solution: {result} : {idx}/{len(v)}')
         else:
             non_solvables[k].append(puzzle_string)
             non_solvables_count += 1
-            print(f'No solution found : {idx}/{len(v)}')
+            # print(f'No solution found : {idx}/{len(v)}')
 
+        print(f'{solvables_count} solvable, {non_solvables_count} not.\r', end='')
     print(f'{solvables_count} solvable, {non_solvables_count} not.')
 
 
