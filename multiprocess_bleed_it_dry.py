@@ -13,7 +13,7 @@ def try_every_removal(puzzle_string):
     """
     Function takes a puzzle that has already been reduced to a small
     number of knowns (approaching the computational limit of the current
-    algorithm) and tests removing every one of the remaining knowns. 
+    algorithm) and tests removing every one of the remaining knowns.
 
     This approach is computationally unrealistic for higher levels of knowns,
     but it would be a waste not to explore fully the sub-30 knowns puzzles that
@@ -75,7 +75,7 @@ def examine_puzzle(tasks_to_do, completed_tasks):
 
 
 if __name__ == '__main__':
-    with open('1hr_run.csv') as file:
+    with open('data/generated_puzzles/28_knowns.csv') as file:
         csv_reader = csv.reader(file, delimiter=',')
         puzzle_dict = defaultdict(list)
         for row in csv_reader:
@@ -89,10 +89,10 @@ if __name__ == '__main__':
     processes = []
 
     # Start the Processes, number == cpu_count()
-    candidates_with_27 = puzzle_dict[28]
-    for cdt in candidates_with_27:
+    candidates = puzzle_dict[28][130:]
+    for cdt in candidates:
         tasks_to_do.put(cdt)
-    num_tasks = len(candidates_with_27)
+    num_tasks = len(candidates)
     for _ in range(number_of_processes):
         p = Process(
             target=examine_puzzle,
@@ -104,18 +104,19 @@ if __name__ == '__main__':
     # the queue, grab it, get the puzzle with the minimum knows, and
     # write it to a results file
     while True:
-        with open('tough_muddas.csv', 'a') as outfile:
+        with open('data/mined_puzzles/below_28_knowns.csv', 'a') as outfile:
             if not completed_tasks.empty():
                 result_dict = completed_tasks.get()
                 num_tasks -= 1
                 min_key = min(result_dict.keys())
                 min_result = result_dict[min_key]
                 outfile.write(f'{min_key},{min_result}\n')
+                outfile.flush()
                 time_elapsed = time.perf_counter() - start_time
                 print(
                     f'Found: {min_key} : {min_result}\n'
                     f'{num_tasks} remaining\n'
-                    f'time elapsed {time_elapsed:0.1f}s'
+                    f'time elapsed {time_elapsed:.2f}s'
                 )
                 if num_tasks == 0:
                     break
