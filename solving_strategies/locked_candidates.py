@@ -1,17 +1,16 @@
 from tools.constants import nonets, nonets_for_cell, SolverResult
-from tools.utils import recalculate_notes
 from collections import defaultdict
 
 
 def locked_candidates_pointing(puzzle):
 
     # Examine columns in squares first. If the digit only appears in one
-    # column, and not the others, then it must be in these cells and not 
+    # column, and not the others, then it must be in these cells and not
     # elsewhere in that same column, outside the square.
 
     for digit in range(1, 10):
         one_note_removed = False
-        for block in nonets[18:27]: # the squares
+        for block in nonets[18:27]:  # the squares
             tp_lft_cell = block[0]
             in_1 = False
             in_2 = False
@@ -114,7 +113,7 @@ def locked_candidates_claiming(puzzle):
         # print(f'********* {digit} *************')
         # print('*******************************')
         for nonet in nonets[0:9]:  # Explore rows first.
-            #print(f'nonet : {nonet}')
+            # print(f'nonet : {nonet}')
             cell_squares = defaultdict(list)
             for cell_index in nonet:
                 if digit in puzzle.notes[cell_index]:
@@ -122,17 +121,38 @@ def locked_candidates_claiming(puzzle):
                     cell_squares[sqr_index].append(cell_index)
             if len(cell_squares) == 1:
                 square = list(cell_squares.keys())[0]
-                #print('cell_squares:', cell_squares)
+                # print('cell_squares:', cell_squares)
                 # Get the other cells in this square that are not in the row.
-                other_cells = [idx for idx in nonets[square] if idx not in nonet]
-                #print('others', other_cells)
+                other_cells = [i for i in nonets[square] if i not in nonet]
+                # print('others', other_cells)
                 for idx in other_cells:
                     if digit in puzzle.notes[idx]:
                         puzzle.notes[idx].remove(digit)
-                        #print(f'{digit} removed from notes for cell {idx}')
-                        one_note_removed
+                        # print(f'{digit} removed from notes for cell {idx}')
+                        one_note_removed = True
             if one_note_removed:
                 return SolverResult.NOTES_ONLY_CHANGED
-            
+
+    # If no result from rows, explore columns
+    for digit in range(1, 10):
+        for nonet in nonets[9:18]:  # Explore columns next.
+            cell_squares = defaultdict(list)
+            for cell_index in nonet:
+                if digit in puzzle.notes[cell_index]:
+                    sqr_index = nonets_for_cell[cell_index][2]
+                    cell_squares[sqr_index].append(cell_index)
+
+            # If the digit only appears in the column cell in this square, and
+            # nowhere else in the column, then it can't be elsewhere in the
+            # square. Remove it from the notes of other cells in the square.
+            if len(cell_squares) == 1:
+                square = list(cell_squares.keys())[0]
+                other_cells = [i for i in nonets[square] if i not in nonet]
+                for idx in other_cells:
+                    if digit in puzzle.notes[idx]:
+                        puzzle.notes[idx].remove(digit)
+                        one_note_removed = True
+            if one_note_removed:
+                return SolverResult.NOTES_ONLY_CHANGED
+
     return SolverResult.NO_CHANGE
-            

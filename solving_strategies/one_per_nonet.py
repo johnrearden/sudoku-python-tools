@@ -3,6 +3,11 @@ from tools.constants import SolverResult
 
 
 def one_per_nonet(puzzle, update_puzzle=True):
+    """
+    This function simply checks the nonets for each cell and, if the cell has
+    only one possibility, sets that cell and recalculates the notes. It makes 
+    only one pass over the cells each time it's called.
+    """
 
     change_detected = SolverResult.NO_CHANGE
 
@@ -20,16 +25,12 @@ def one_per_nonet(puzzle, update_puzzle=True):
         for num in number_list:
             if num in puzzle.notes[index] and num != cell:
                 puzzle.notes[index].remove(num)
-                
+
     if update_puzzle:
         for index, cell in enumerate(puzzle.cells):
             if len(puzzle.notes[index]) == 1 and puzzle.cells[index] == 0:
                 puzzle.cells[index] = puzzle.notes[index][0]
                 change_detected = SolverResult.NOTES_AND_CELLS_CHANGED
                 puzzle = recalculate_notes(puzzle)
-                
-    return change_detected
-            
 
-        
-        
+    return change_detected
