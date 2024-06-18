@@ -63,7 +63,7 @@ def main():
         locked_candidates_claiming,
     ]
 
-    with open('tough_muddas.csv', 'r') as infile:
+    with open('data/generated_puzzles/28_knowns.csv', 'r') as infile:
         puzzle_dict = defaultdict(list)
         reader = csv.reader(infile, delimiter=',')
         for row in reader:
@@ -77,21 +77,21 @@ def main():
     non_solvables_count = 0
 
     # for k, v in puzzle_dict.items():
-    k = '23'
+    k = '28'
     v = puzzle_dict[k]
-    for puzzle_string in v:
+    for idx, puzzle_string in enumerate(v):
         result = solve_with_strategies(puzzle_string, solvers)
         print('-------------------------')
         print(f'Puzzle ({k}) {puzzle_string}')
         if result:
             solvables[k].append(puzzle_string)
             solvables_count += 1
-            print(f'solution: {result}')
+            print(f'solution: {result} : {idx}/{len(v)}')
         else:
             non_solvables[k].append(puzzle_string)
             non_solvables_count += 1
-            print('No solution found')
-                
+            print(f'No solution found : {idx}/{len(v)}')
+
     print(f'{solvables_count} solvable, {non_solvables_count} not.')
 
 
