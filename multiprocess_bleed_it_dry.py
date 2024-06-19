@@ -66,7 +66,7 @@ def examine_puzzle(tasks_to_do, completed_tasks):
                 for result in results:
                     known_count = len([char for char in result if char != '-'])
                     further_puzzles[known_count] = result  # update with new
-                    if known_count == 23:
+                    if known_count == 21:
                         break_from_while = True
                 if break_from_while:
                     break  # stop at 22, seems like less is wasted effort
@@ -75,7 +75,7 @@ def examine_puzzle(tasks_to_do, completed_tasks):
 
 
 if __name__ == '__main__':
-    with open('data/generated_puzzles/28_knowns.csv') as file:
+    with open('data/generated_puzzles/27_knowns.csv') as file:
         csv_reader = csv.reader(file, delimiter=',')
         puzzle_dict = defaultdict(list)
         for row in csv_reader:
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     processes = []
 
     # Start the Processes, number == cpu_count()
-    candidates = puzzle_dict[28][130:]
+    candidates = puzzle_dict[27]
     for cdt in candidates:
         tasks_to_do.put(cdt)
     num_tasks = len(candidates)
@@ -104,7 +104,7 @@ if __name__ == '__main__':
     # the queue, grab it, get the puzzle with the minimum knows, and
     # write it to a results file
     while True:
-        with open('data/mined_puzzles/below_28_knowns.csv', 'a') as outfile:
+        with open('data/mined_puzzles/below_27_knowns.csv', 'a') as outfile:
             if not completed_tasks.empty():
                 result_dict = completed_tasks.get()
                 num_tasks -= 1

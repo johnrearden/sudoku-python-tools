@@ -83,7 +83,7 @@ def main():
                 time_elapsed = time.perf_counter() - start_time
                 out = (
                     f'{num_found} ({target_count}) found in '
-                    f'{time_elapsed:.2}s        ')
+                    f'{time_elapsed:.2f}s        ')
                 print(out + '\r', end='')
                 file.write(result + '\n')
                 file.flush()
