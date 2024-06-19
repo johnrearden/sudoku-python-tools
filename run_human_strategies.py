@@ -9,7 +9,7 @@ from solving_strategies.x_wing import x_wing_rows
 from solving_strategies.x_wing import x_wing_cols
 from solving_strategies.locked_candidates import locked_candidates_pointing
 from solving_strategies.locked_candidates import locked_candidates_claiming
-from solving_strategies.swordfish import swordfish_rows
+from solving_strategies.swordfish import swordfish_rows, swordfish_cols
 
 from tools.classes import Puzzle
 from tools.utils import puzzle_complete
@@ -58,11 +58,13 @@ def main():
         hidden_pairs,
         hidden_triples,
         naked_quads,
-        x_wing_rows,
-        x_wing_cols,
-        locked_candidates_pointing,
-        locked_candidates_claiming,
-        swordfish_rows,
+        # swordfish_rows,
+        # swordfish_cols,
+        # x_wing_rows,
+        # x_wing_cols,
+        # locked_candidates_pointing,
+        # locked_candidates_claiming,
+        
     ]
 
     with open('data/mined_puzzles/below_28_knowns.csv', 'r') as infile:
