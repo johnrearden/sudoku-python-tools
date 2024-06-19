@@ -50,7 +50,7 @@ def swordfish_rows(puzzle):
 
         # There should only be 1 set of 3 rows.
         if len(pruned_row_combos) > 1:
-            print('len(pruned_row_combos) > 1')
+            # print('len(pruned_row_combos) > 1')
             return SolverResult.NO_CHANGE
 
         # Remove the digit from the notes of the cover cells.
@@ -66,7 +66,7 @@ def swordfish_rows(puzzle):
                             at_least_one_removed = True
                             # print(f'removing {digit} from {cell_idx}')
             if at_least_one_removed:
-                print('swordfish successful')
+                # print('swordfish successful')
                 return SolverResult.NOTES_ONLY_CHANGED
 
     return SolverResult.NO_CHANGE
@@ -117,7 +117,7 @@ def swordfish_cols(puzzle):
 
         # There should only be 1 set of 3 rows.
         if len(pruned_col_combos) > 1:
-            print('len(pruned_col_combos) > 1')
+            # print('len(pruned_col_combos) > 1')
             return SolverResult.NO_CHANGE
 
         # Remove the digit from the notes of the cover cells.
@@ -133,7 +133,7 @@ def swordfish_cols(puzzle):
                             at_least_one_removed = True
                             # print(f'removing {digit} from {cell_idx}')
             if at_least_one_removed:
-                print('swordfish successful')
+                # print('swordfish successful')
                 return SolverResult.NOTES_ONLY_CHANGED
 
     return SolverResult.NO_CHANGE

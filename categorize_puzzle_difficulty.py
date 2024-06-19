@@ -17,6 +17,7 @@ from tools.constants import SolverResult
 
 from collections import defaultdict
 import csv
+import argparse
 
 
 def solve_with_strategies(puzzle_string, solvers, verbose=False):
@@ -50,7 +51,7 @@ def solve_with_strategies(puzzle_string, solvers, verbose=False):
 
 
 def main():
-    solvers = [
+    simple_solvers = [
         one_per_nonet,
         hidden_single,
         naked_pairs,
@@ -58,15 +59,26 @@ def main():
         hidden_pairs,
         hidden_triples,
         naked_quads,
-        swordfish_rows,
-        swordfish_cols,
+    ]
+    adv_solvers = [
         x_wing_rows,
         x_wing_cols,
         locked_candidates_pointing,
         locked_candidates_claiming,
+        swordfish_rows,
+        swordfish_cols,
     ]
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-f', '--file',
+        type=str,
+        required=True,
+        help='File containing puzzles to solve',
+    )
+    args = parser.parse_args()
 
-    with open('data/mined_puzzles/below_27_knowns.csv', 'r') as infile:
+    with open(f'data/mined_puzzles/{args.file}', 'r') as infile:
         puzzle_dict = defaultdict(list)
         reader = csv.reader(infile, delimiter=',')
         for row in reader:
@@ -77,6 +89,8 @@ def main():
     solvables = defaultdict(list)
     non_solvables = []
 
+    # First run with all solvers, to isolate the ones that require brute force.
+    solvers = simple_solvers + adv_solvers
     for k, v in puzzle_dict.items():
         solvables_count = 0
         non_solvables_count = 0
@@ -96,6 +110,38 @@ def main():
         print(f'{k} knowns :')
         print(f'{solvables_count} solvable, {non_solvables_count} not.\r', end='')
         print(f'{solvables_count} solvable, {non_solvables_count} not.')
+
+        with open('data/brute_only/discards.csv', 'a') as outfile:
+            for item in non_solvables:
+                outfile.write(item + '\n')
+
+    # Second run with only simple solvers.
+    csv_output = []
+    for k, v in solvables.items():
+        simple_algo_count = 0
+        adv_algo_count = 0
+        for idx, puzzle_string in enumerate(v):
+            result = solve_with_strategies(puzzle_string, simple_solvers)
+            # print('-------------------------')
+            # print(f'Puzzle ({k}) {puzzle_string}')
+            if result:
+                csv_ln = f'{k},{puzzle_string},simple'
+                csv_output.append(csv_ln)
+                simple_algo_count += 1
+                # print(f'solution: {result} : {idx}/{len(v)}')
+            else:
+                csv_ln = f'{k},{puzzle_string},advanced'
+                csv_output.append(csv_ln)
+                adv_algo_count += 1
+                # print(f'No solution found : {idx}/{len(v)}')
+
+        print(f'{k} knowns :')
+        print(f'{simple_algo_count} simple, {adv_algo_count} adv.')
+
+    with open('data/finished/all_finished/finished.csv', 'a') as outfile:
+        for item in csv_output:
+            outfile.write(item + '\n')
+
 
 
 if __name__ == '__main__':
