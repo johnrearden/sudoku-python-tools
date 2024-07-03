@@ -25,5 +25,13 @@ in each nonet, at 0.15. This doesn't seem like strong enough evidence to begin
 generating puzzles under a strategy of distributing the knowns evenly across nonets, so
 I'm continuing to generate the puzzles randomly.
 
-This process is producting plenty of results, and with the ability to transform the 
+This process is producing plenty of results, and with the ability to transform the 
 puzzles using digit and nonet swapping, there will be plenty of puzzles for the app.
+
+### Puzzle Transformations
+- Substitution of digits : Digits are abitrary tokens
+- Rotations : through 90, 180 or 270
+- Reflections
+- Permutation of stacks and bands
+- Permutation of columns within stacks, and rows within bands.
+
