@@ -68,7 +68,7 @@ def main():
         swordfish_rows,
         swordfish_cols,
     ]
-    
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-f', '--file',
@@ -141,7 +141,6 @@ def main():
     with open('data/finished/all_finished/finished.csv', 'a') as outfile:
         for item in csv_output:
             outfile.write(item + '\n')
-
 
 
 if __name__ == '__main__':

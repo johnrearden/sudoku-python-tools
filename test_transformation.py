@@ -1,6 +1,9 @@
 from transformations.digit_substitution import substitute_digits
 from transformations.rotation import rotate_puzzle_string
 from transformations.shuffle_stacks import shuffle_stacks
+from transformations.shuffle_bands import shuffle_bands
+from transformations.shuffle_rows import shuffle_rows
+from transformations.shuffle_columns import shuffle_columns
 from solving_strategies.one_per_nonet import one_per_nonet
 from solving_strategies.hidden_single import hidden_single
 from solving_strategies.naked_pairs import naked_pairs
@@ -22,7 +25,7 @@ import csv
 
 
 def main():
-    with open('data/finished/all_finished/finished.csv', 'r') as file:
+    with open('data/finished/all_finished/advanced_dedup.csv', 'r') as file:
 
         simple_strats = [
             one_per_nonet,
@@ -49,6 +52,11 @@ def main():
             #     continue
             print(puzzle_row)
             new_string = shuffle_stacks(puzzle_row[1])
+            new_string = shuffle_bands(new_string)
+            new_string = shuffle_rows(new_string)
+            new_string = shuffle_columns(new_string)
+            new_string = rotate_puzzle_string(new_string)
+            new_string = substitute_digits(new_string)
 
             # Confirm puzzle still has unique solution
             puzzle = Puzzle()
@@ -68,24 +76,32 @@ def main():
                 print(f'result for adv puzzle with simple strats: {result}')
                 result = solve_with_strategies(new_string, all_strats)
                 print(f'result for adv puzzle with all strats: {result}')
+                if result:
+                    
                 result = solve_with_strategies(puzzle_row[1], all_strats)
                 print(f'result for original with all_strats: {result}')
 
             print()
             print()
-            
-            
+
+
 def main2():
-    puzzle_string = '---3-42---1-9----------179-4----9---3--1--5----52---8---9-8---3-------162--------'
-    puzzle = Puzzle()
-    puzzle.build_from_string(puzzle_string)
-    print(puzzle)
-    
-    str = shuffle_stacks(puzzle_string)
-    puzzle = Puzzle()
-    puzzle.build_from_string(str)
-    print(puzzle)
+    row_dict = {}
+    with open('data/finished/all_finished/finished.csv', 'r') as infile:
+        csv_reader = csv.reader(infile)
+        count = 0
+        
+        for row in csv_reader:
+            count += 1
+            if row[2] == 'advanced':
+                row_dict[row[1]] = row
+        print(len(row_dict), count)
+
+    with open('data/finished/all_finished/advanced_dedup.csv', 'w') as outfile:
+        csv_writer = csv.writer(outfile)
+        for k, v in row_dict.items():
+            csv_writer.writerow(v)
 
 
 if __name__ == '__main__':
-    main2()
+    main()

@@ -13,8 +13,6 @@ def shuffle_stacks(puzzle_string):
     from_arr = stack_array.flatten()
     permuted_array = np.random.permutation(stack_array)
     to_arr = permuted_array.flatten()
-    print(from_arr)
-    print(to_arr)
 
     # Swap the stacks
     for i in range(0, 9):
