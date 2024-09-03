@@ -46,61 +46,49 @@ def main():
         ]
         all_strats = [*simple_strats, *advanced_strats]
 
-        csv_reader = csv.reader(file)
-        for puzzle_row in csv_reader:
-            # if puzzle_row[2] == 'simple':
-            #     continue
-            print(puzzle_row)
-            new_string = shuffle_stacks(puzzle_row[1])
-            new_string = shuffle_bands(new_string)
-            new_string = shuffle_rows(new_string)
-            new_string = shuffle_columns(new_string)
-            new_string = rotate_puzzle_string(new_string)
-            new_string = substitute_digits(new_string)
-
-            # Confirm puzzle still has unique solution
-            puzzle = Puzzle()
-            puzzle.build_from_string(new_string)
-            unique = is_unique(puzzle)
-            print(f'Puzzle is still unique: {unique}')
-
-            # Confirm puzzle can still be solved with same strategy groups
-            strategies = []
-            if puzzle_row[2] == 'simple':
-                strategies = simple_strats
-                result = solve_with_strategies(new_string, strategies)
-                print(f'result for simple strat puzzle: {result}')
-            else:
-                strategies = simple_strats
-                result = solve_with_strategies(new_string, strategies)
-                print(f'result for adv puzzle with simple strats: {result}')
-                result = solve_with_strategies(new_string, all_strats)
-                print(f'result for adv puzzle with all strats: {result}')
-                if result:
-                    
-                result = solve_with_strategies(puzzle_row[1], all_strats)
-                print(f'result for original with all_strats: {result}')
-
-            print()
-            print()
-
-
-def main2():
-    row_dict = {}
-    with open('data/finished/all_finished/finished.csv', 'r') as infile:
-        csv_reader = csv.reader(infile)
-        count = 0
         
-        for row in csv_reader:
-            count += 1
-            if row[2] == 'advanced':
-                row_dict[row[1]] = row
-        print(len(row_dict), count)
+        iterations_per_puzzle = 80
+        csv_reader = csv.reader(file)
+        for i, puzzle_row in enumerate(csv_reader):
+            
+            permutated_puzzles = []
+            for j in range(iterations_per_puzzle):
+                new_string = shuffle_stacks(puzzle_row[1])
+                new_string = shuffle_bands(new_string)
+                new_string = shuffle_rows(new_string)
+                new_string = shuffle_columns(new_string)
+                new_string = rotate_puzzle_string(new_string)
+                new_string = substitute_digits(new_string)
 
-    with open('data/finished/all_finished/advanced_dedup.csv', 'w') as outfile:
-        csv_writer = csv.writer(outfile)
-        for k, v in row_dict.items():
-            csv_writer.writerow(v)
+                # Confirm puzzle still has unique solution
+                puzzle = Puzzle()
+                puzzle.build_from_string(new_string)
+                unique = is_unique(puzzle)
+                print(f'Puzzle is still unique: {unique}')
+
+                # Confirm puzzle can still be solved with same strategy groups
+                strategies = []
+                if puzzle_row[2] == 'simple':
+                    strategies = simple_strats
+                    result = solve_with_strategies(new_string, strategies)
+                    print(f'result for simple strat puzzle: {result}')
+                else:
+                    strategies = simple_strats
+                    result_simple_strats = solve_with_strategies(new_string, strategies)
+                    print(f'result for adv puzzle with simple strats: {result_simple_strats}')
+                    result_all_strats = solve_with_strategies(new_string, all_strats)
+                    print(f'result for adv puzzle with all strats: {result_all_strats}')
+                    if result_all_strats and not result_simple_strats:
+                        new_row = [puzzle_row[0], new_string, 'advanced']
+                        permutated_puzzles.append(new_row)
+
+                print(f'permutation {j} of puzzle {i}')
+
+
+            with open('data/finished/all_finished/permutations.csv', 'a') as outfile:
+                csv_writer = csv.writer(outfile)
+                for row in permutated_puzzles:
+                    csv_writer.writerow(row)
 
 
 if __name__ == '__main__':
