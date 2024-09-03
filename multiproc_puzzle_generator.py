@@ -18,7 +18,7 @@ def create_sudoku_puzzle(target, completed_tasks, go_flag):
     while go_flag.value:  # Continue until the go_flag is set to False
 
         puzzle = Puzzle()
-        brute_force(puzzle)
+        brute_force(puzzle)     
 
         indices_to_remove = choose_n_unknowns(puzzle, 81 - target)
         random.shuffle(indices_to_remove)
