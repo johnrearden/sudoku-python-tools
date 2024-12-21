@@ -1,5 +1,12 @@
 # sudoku-python-tools
 
+The project generates sudoku puzzles of varying difficulty that can be solved by humans without employing guessing or brute-force strategies.
+The central element in the project is the brute force solver - `solving_strategies/brute_force.py`. This does three things:
+
+- Correctly solves puzzles with one unique solution.
+- Detects puzzles with zero or more than one solution.
+- Generates new legal completed sudoku puzzles.
+
 ### Puzzle Generation
 
 The current workflow is to first generate a large number of 28-known puzzles

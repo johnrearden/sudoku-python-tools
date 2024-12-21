@@ -21,6 +21,9 @@ import argparse
 
 
 def solve_with_strategies(puzzle_string, solvers, verbose=False):
+    '''
+    Solve a puzzle with a list of solvers. Return the solved puzzle or None if no solution is found.
+    '''
     puzzle = Puzzle()
     puzzle.build_from_string(puzzle_string)
     solver_usage = defaultdict(int)
@@ -51,6 +54,28 @@ def solve_with_strategies(puzzle_string, solvers, verbose=False):
 
 
 def main():
+    """
+    Categorizes Sudoku puzzles by difficulty based on the solvers required to solve them.
+
+    This script reads a file containing Sudoku puzzles, attempts to solve them using a set of simple and advanced solvers,
+    and categorizes them based on whether they can be solved with simple solvers or require advanced solvers.
+    The results are saved to CSV files for further analysis.
+
+    Command-line Arguments:
+    -f, --file: The file containing puzzles to solve.
+
+    The input file should be a CSV file with each row containing:
+    - The number of known cells in the puzzle.
+    - The puzzle string.
+
+    The script performs two runs:
+    1. First run with all solvers to isolate puzzles that require brute force.
+    2. Second run with only simple solvers to categorize puzzles as solvable by simple or advanced strategies.
+
+    Output:
+    - 'data/brute_only/discards.csv': Contains puzzles that require brute force.
+    - 'data/finished/all_finished/finished.csv': Contains categorized puzzles with their difficulty level.
+    """
     simple_solvers = [
         one_per_nonet,
         hidden_single,
@@ -96,16 +121,12 @@ def main():
         non_solvables_count = 0
         for idx, puzzle_string in enumerate(v):
             result = solve_with_strategies(puzzle_string, solvers)
-            # print('-------------------------')
-            # print(f'Puzzle ({k}) {puzzle_string}')
             if result:
                 solvables[k].append(puzzle_string)
                 solvables_count += 1
-                # print(f'solution: {result} : {idx}/{len(v)}')
             else:
                 non_solvables.append(puzzle_string)
                 non_solvables_count += 1
-                # print(f'No solution found : {idx}/{len(v)}')
 
         print(f'{k} knowns :')
         print(f'{solvables_count} solvable, {non_solvables_count} not.\r', end='')
@@ -122,18 +143,14 @@ def main():
         adv_algo_count = 0
         for idx, puzzle_string in enumerate(v):
             result = solve_with_strategies(puzzle_string, simple_solvers)
-            # print('-------------------------')
-            # print(f'Puzzle ({k}) {puzzle_string}')
             if result:
                 csv_ln = f'{k},{puzzle_string},simple'
                 csv_output.append(csv_ln)
                 simple_algo_count += 1
-                # print(f'solution: {result} : {idx}/{len(v)}')
             else:
                 csv_ln = f'{k},{puzzle_string},advanced'
                 csv_output.append(csv_ln)
                 adv_algo_count += 1
-                # print(f'No solution found : {idx}/{len(v)}')
 
         print(f'{k} knowns :')
         print(f'{simple_algo_count} simple, {adv_algo_count} adv.')
